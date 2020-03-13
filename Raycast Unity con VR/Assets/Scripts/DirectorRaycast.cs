@@ -27,13 +27,11 @@ public class DirectorRaycast : MonoBehaviour
     int llamadas = 0; 
     void Update()
     {
-        //Debug.Log("NOMBRE DEL OBJETO: " + this.name);
+      
       
         if (Input.GetButtonDown("right_vr_controller"))
         {
-            //Debug.Log("ENTRO");
-            //Debug.Log("Nombre: " + this.name);
-            //Debug.Log("ENTRO DERECHA"); 
+            
 
             throwRaycast(GameObject.Find("Controller (right)"));
           
@@ -42,7 +40,7 @@ public class DirectorRaycast : MonoBehaviour
         else if (Input.GetButtonDown("left_vr_controller"))
         {
             
-            //Debug.Log("ENTRO IZQUIERDA"); 
+          
             throwRaycast(GameObject.Find("Controller (left)"));
         }
     }
@@ -50,19 +48,17 @@ public class DirectorRaycast : MonoBehaviour
     {
         RaycastHit hit;
         
-        //Debug.Log("Nombre del raycast: " + gameObject.name);
+       
         //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // dibuja un rayo invisible hacia donde apunta el cursor del raton
         Ray ray = new Ray(gameObject.transform.position, gameObject.transform.forward);
         llamadas += 1;
-        Debug.Log("Llamadas a raycast: " + llamadas);
+       
+        
         if (Physics.Raycast(ray, out hit)) // ¿Choca ese rayo con algun objeto? 
         {
             if (hit.collider != null) // Cogemos el collider (propiedades del cuerpo) del objeto que choca
             {
-                //Debug.Log("CHOCA" + i + "veces");
-                Debug.Log("nombre: " + gameObject.name + "Choca con: " + hit.collider.name); 
-
-                //Debug.Log("Collider" + i + " : " + hit.collider.name);
+           
                 // Finalmente comprobamos si el cuerpo con el que ha chocado es de alguno de los musicos 
                 // y si es asi cargamos su pista de audio correspondiente. 
                 if (hit.collider.name == "Music1")
@@ -94,8 +90,6 @@ public class DirectorRaycast : MonoBehaviour
             }
             else
             {
-                //Debug.Log("NO CHOCA" + j + "veces");
-                //Debug.DrawRay(gameObject.transform.position, gameObject.transform.forward * 1000, Color.black, 1);
                 j = j + 1;
             }
         }
