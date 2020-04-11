@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR; 
 
 public class DirectorRaycast : MonoBehaviour
 {
@@ -11,7 +12,12 @@ public class DirectorRaycast : MonoBehaviour
     public AudioClip music2; // pista de audio del musico 2
     public AudioClip music3; // pista de audio del musico 3
     public AudioClip music4;
-    public AudioClip music5; 
+    public AudioClip music5;
+
+    int vecesGatilloCapturado = 0; 
+
+    //[SteamVR_DefaultAction("Squeeze")]
+    public SteamVR_Action_Single directAction; 
 
     AudioSource fuenteAudio; 
 
@@ -27,20 +33,19 @@ public class DirectorRaycast : MonoBehaviour
     int llamadas = 0; 
     void Update()
     {
-      
-      
-        if (Input.GetButtonDown("right_vr_controller"))
-        {
-            
+        float triggerValueRight = -1;
+        float triggerValueLeft = -1; 
+        triggerValueRight = directAction.GetAxis(SteamVR_Input_Sources.RightHand);
+        triggerValueLeft = directAction.GetAxis(SteamVR_Input_Sources.LeftHand);
 
+        if (triggerValueRight == 1)
+        {
+            Debug.Log("Entro derecha"); 
             throwRaycast(GameObject.Find("Controller (right)"));
-          
-
         }
-        else if (Input.GetButtonDown("left_vr_controller"))
+        else if(triggerValueLeft == 1)
         {
-            
-          
+            Debug.Log("Entro izquierda"); 
             throwRaycast(GameObject.Find("Controller (left)"));
         }
     }
@@ -65,26 +70,31 @@ public class DirectorRaycast : MonoBehaviour
                 {
                     fuenteAudio.clip = music1;
                     fuenteAudio.Play();
+                    Debug.Log("Suena " + music1); 
                 }
                 if (hit.collider.name == "Music2")
                 {
                     fuenteAudio.clip = music2;
                     fuenteAudio.Play();
+                    Debug.Log("Suena " + music2);
                 }
                 if (hit.collider.name == "Music3")
                 {
                     fuenteAudio.clip = music3;
                     fuenteAudio.Play();
+                    Debug.Log("Suena " + music3);
                 }
                 if (hit.collider.name == "Music4")
                 {
                     fuenteAudio.clip = music4;
                     fuenteAudio.Play();
+                    Debug.Log("Suena " + music4);
                 }
                 if (hit.collider.name == "Music5")
                 {
                     fuenteAudio.clip = music5;
                     fuenteAudio.Play();
+                    Debug.Log("Suena " + music5);
                 }
                 i = i + 1;
             }

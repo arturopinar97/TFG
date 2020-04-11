@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.fundamentals.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\Arthur\\Desktop\\PROYECTOS EN PROCESO\\TFG\\desarrollo Raycast Unity con gestos\\Raycast Unity con VR\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "C:\\Users\\Arthur\\Desktop\\PROYECTOS\\GRADO\\version_anterior\\TFG\\Raycast Unity con VR\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "Fundamentals [Testing]"
