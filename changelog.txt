@@ -24,3 +24,12 @@ CHANGED:
 - Para realizar la captura del collider: 
 	- Agrego un collider a cada cubo. 
 	- Creacion del Script StateController.cs para capturar el collider del cubo 1 respecto al guante. 
+
+
+V1.3: 
+ADDED: 
+- Soporte para capturar el gesto del guante entero (es decir, capturar todos los estados). 
+- Todavia no tienen tiempo predefinido. 
+
+CHANGED: 
+- Script StateController.cs
