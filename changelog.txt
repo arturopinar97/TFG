@@ -1,0 +1,12 @@
+ADDED: 
+- Los guantes se ven correctamente en RV. 
+- No hay errores de compilacion. 
+
+CHANGED: 
+
+- Agregado SDK de Noitom HI5 (no el de Interaction ya que ese provoca errores al no usar sus objetos interactivos).
+
+- Comentada linea de mHumanButtons.setVisible(value); para evitar que los botones de magnetizacion y ayuda se muestren en las manos de RV. 
+  Script: HI5_VIVEInstance.cs
+
+- Cambiado el color del material de las manos para ponerlas de color carne. 
