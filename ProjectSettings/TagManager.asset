@@ -6,6 +6,9 @@ TagManager:
   tags:
   - projectile
   - FxTemporaire
+  - ChairsRow01
+  - box
+  - glove
   layers:
   - Default
   - TransparentFX
