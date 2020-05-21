@@ -226,7 +226,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c848d318c783da14d920cdb75f1ee7ac, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -325,6 +325,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderFeedback: {fileID: 0}
+  originalTime: 0
+  tiempoAcabado: 0
 --- !u!1 &251034292 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1360726612543670, guid: 76d599f0a7ea26c48ad727e9690b88c4,
@@ -712,7 +714,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b9fa0bf87ac874487d9c103726cffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderFeedback: {fileID: 8300000, guid: b9de9227a7873f943873a0be0421e4be, type: 3}
+  colliderFeedback: {fileID: 8300000, guid: c848d318c783da14d920cdb75f1ee7ac, type: 3}
+  originalTime: 0
+  tiempoAcabado: 0
 --- !u!82 &784378820
 AudioSource:
   m_ObjectHideFlags: 0
@@ -809,6 +813,40 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!21 &804602390
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Sprites/Default
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - PixelSnap: 0
+    - _EnableExternalAlpha: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,41 +936,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 622348371}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1866705872
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Sprites/Default
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _AlphaTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - PixelSnap: 0
-    - _EnableExternalAlpha: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
---- !u!43 &1939328046
+--- !u!43 &1192183847
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1202,7 +1206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b9fa0bf87ac874487d9c103726cffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderFeedback: {fileID: 8300000, guid: 3ee1fc95c2ea4134fa1e8af41ac81b01, type: 3}
+  colliderFeedback: {fileID: 8300000, guid: c848d318c783da14d920cdb75f1ee7ac, type: 3}
+  originalTime: 0
+  tiempoAcabado: 0
 --- !u!82 &1946285032
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1386,12 +1392,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1866705872}
+      objectReference: {fileID: 804602390}
     - target: {fileID: 33445139971948054, guid: 76d599f0a7ea26c48ad727e9690b88c4,
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1939328046}
+      objectReference: {fileID: 1192183847}
     - target: {fileID: 114169821582657294, guid: 76d599f0a7ea26c48ad727e9690b88c4,
         type: 3}
       propertyPath: m_Renderer
