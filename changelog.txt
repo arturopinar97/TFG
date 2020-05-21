@@ -34,13 +34,10 @@ ADDED:
 CHANGED: 
 - Script StateController.cs
 
-
-V1.4: 
+V1.5: 
 ADDED: 
-- Temporizador para llevar la cuenta de las negras. Cada estado dura 1 segundo. 
-- El reconocimiento de la posicion de la mano en cada cubo en funcion del estado se lleva bien, salvo un pequeño offset producido por el collider
-  que se genera al tocar la mano uno de los cubos. El estado cambia sin embargo la mano al estar saliendo del cubo pero provocar el 
-  collider dentro de el devuelve movimiento erroneo. 
+- Cubos de escena 2/4 bien colocados. 
+- Scripts no hechos. 
 
 CHANGED: 
-- Script StateController.cs
+- Posicion de los cubos en la escena. 

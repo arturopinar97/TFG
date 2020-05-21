@@ -63,18 +63,27 @@ AudioSource fuenteAudio;
         //Debug.Log("---- CUBO: ------ X: " + box1.transform.position.x + "Y: " + transform.position.y + "Z: " + transform.position.z); 
         //timer(); 
         StartCoroutine(waiter());
+        luce(); 
         // iluminar cubos checkeando cada estado en cada frame. 
     
     }
 
     private void luce() {
+        
         if(state == 1) {
+            GameObject.Find("Cube1").GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+            GameObject.Find("Cube2").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+            GameObject.Find("Cube3").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
         }
         else if(state == 2) {
-            // luce 2
+            GameObject.Find("Cube1").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+            GameObject.Find("Cube2").GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+            GameObject.Find("Cube3").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
         }
         else if(state == 3) {
-            // luce 3
+            GameObject.Find("Cube1").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+            GameObject.Find("Cube2").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+            GameObject.Find("Cube3").GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
         }
     }
 
