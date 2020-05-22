@@ -34,10 +34,12 @@ ADDED:
 CHANGED: 
 - Script StateController.cs
 
-V1.5: 
+
+V1.6: 
 ADDED: 
-- Cubos de escena 2/4 bien colocados. 
-- Scripts no hechos. 
+- Primera version funcional de escena tutorial tempo 2/4. 
+- La informacion se saca por logs. 
+- Feedback sonoro que tambien habrá que cambiar. 
 
 CHANGED: 
-- Posicion de los cubos en la escena. 
+- StateController.cs

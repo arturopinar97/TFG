@@ -12,14 +12,33 @@ public class StateController : MonoBehaviour {
 
 //public GameObject box1; 
 public AudioClip colliderFeedback; 
+public AudioClip wrongMove; 
+public AudioClip goodMove; 
 
 public static int state; 
+private static int distanceError; // usado para el margen de error de movimiento de la mano.
 private bool activeTimer; // cerrojo para el timer. 
+private static double lastDistance; 
+private static bool lastMoveOk;
+public GameObject rightHand; 
 public double originalTime; 
 public bool tiempoAcabado = false; 
-private int maxStates; 
 private bool newState = false;
+
+
+// checkpoints aux boxes:
+private static bool checkAux1; 
+private static bool checkAux2; 
+
+private bool firstMove; 
 AudioSource fuenteAudio; 
+
+// resolver repetidos colliders dentro del cubo: 
+
+private static bool lockCollider1; 
+private static bool lockCollider2; 
+private static bool lockCollider3; 
+private static bool lockCollider4; 
 
     public StateController(/* int maxStates */){
         //maxStates = 3; // 2 por 4
@@ -28,9 +47,20 @@ AudioSource fuenteAudio;
         fuenteAudio = GetComponent<AudioSource> ();
         state = 1; 
         originalTime = 1; 
-        maxStates = 3; 
         newState = false; 
         activeTimer = false; 
+        distanceError = 100; 
+        lastDistance = Double.PositiveInfinity; 
+        lastMoveOk = true; 
+        checkAux1 = false; 
+        checkAux2 = false; 
+        firstMove = true; 
+         // evitar collider repetidos al salir la mano de la caja: 
+            
+        lockCollider1 = false; 
+        lockCollider2 = true; 
+        lockCollider3 = true; 
+        lockCollider4 = true; 
     }
 
 
@@ -41,20 +71,17 @@ AudioSource fuenteAudio;
             fuenteAudio.clip = colliderFeedback; 
             activeTimer = true; // los estados no pueden reiniciarse hasta llegar al final. 
             state = 1; 
-            Debug.Log("Estado pasa a ser: " + state);
+            //Debug.Log("Estado pasa a ser: " + state);
             fuenteAudio.Play(); 
 
             yield return new WaitForSecondsRealtime(1); 
             state = 2; 
-            Debug.Log("Estado pasa a ser: " + state); 
+            //Debug.Log("Estado pasa a ser: " + state); 
             fuenteAudio.Play(); 
             yield return new WaitForSecondsRealtime(1);
-
-            state = 3; 
-            Debug.Log("Estado pasa a ser: " + state); 
-            fuenteAudio.Play(); 
-            yield return new WaitForSecondsRealtime(1); 
             activeTimer = false; // ya pueden volver a reiniciarse los estados.
+            
+           
         }
         //StartCoroutine(waiter());
     }
@@ -68,111 +95,99 @@ AudioSource fuenteAudio;
     
     }
 
+    
     private void luce() {
         
         if(state == 1) {
-            GameObject.Find("Cube1").GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
-            GameObject.Find("Cube2").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
-            GameObject.Find("Cube3").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+            GameObject.Find("state1").GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+            GameObject.Find("state2").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
         }
         else if(state == 2) {
-            GameObject.Find("Cube1").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
-            GameObject.Find("Cube2").GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
-            GameObject.Find("Cube3").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
-        }
-        else if(state == 3) {
-            GameObject.Find("Cube1").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
-            GameObject.Find("Cube2").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
-            GameObject.Find("Cube3").GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+            GameObject.Find("state1").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+            GameObject.Find("state2").GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
         }
     }
-
-
-    public bool CheckDirection(Vector3 auxPos, Vector3 destPosition, float dist)
-    {
-        float distTemp = Vector3.Distance(destPosition, auxPos);
-        //if(est2)  Debug.Log(distTemp);
-
-        if (distTemp <= dist)
-        {
-           // mal = false;
-            dist = distTemp;
-            return true;
-        }
-        else if (distTemp > dist)
-        { 
-            dist = distTemp;
-          //  mal = true;
-           
-            return false;
-        }
-        else return true;
-
-
-    }
-
-    private void timer() {
-        int tmp = -1; 
-        originalTime -= Time.deltaTime; 
-        
-        //originalTime = Math.Floor(Math.Abs(originalTime));  
-        //Debug.Log("tiempo: " + originalTime); 
-       
-        if(originalTime < 0 && !newState) { // el tiempo del estado se ha acabado
-            newState = true; // cerrojo
-            tmp = state + 1; 
-            if(tmp <= 3) {
-                state += 1; 
-            }
-            else if(tmp >= 3) {
-                state = 1; 
-            }
-            Debug.Log("Timer coloca el estado: " + state); 
-            originalTime = 1; // se restablece el contador para el siguiente estado
-            newState = false; 
-            fuenteAudio.clip = colliderFeedback; 
-            fuenteAudio.Play(); 
-        }
-    }
+   
 
     private void OnTriggerEnter(Collider other) {
-        Debug.Log("SIGUIENTE ESTADO: " + state); 
-        if(this.name == "Cube1" && 
-            state == 1){
-                
-                //Debug.Log("collider: " + other.gameObject.tag);
-                //Debug.Log("CHOCO CON " + other.gameObject.name); 
-                //fuenteAudio.clip = colliderFeedback; 
-                //fuenteAudio.Play(); 
-                Debug.Log("Has tocado correctamente el primer cubo "); 
-                state += 1;  
+        if(this.name == "state2" && !lockCollider3) { // tocas el cubo 3
+            lockColliders(false, false, true, false); 
+            if(checkAux1) { // pasas por el checkpoint
+                if(state == 2) { // lo has hecho en el tiempo adecuado
+                    Debug.Log("Primera parte del movimiento correcta. "); 
+                }
+                else{
+                    Debug.Log("Movimiento demasiado lento o rapido. "); 
+                    fuenteAudio.clip = wrongMove; 
+                    fuenteAudio.Play();
+                    resetTempo(); 
+                }
             }
-
-
-        if(this.name == "Cube2" && 
-            state == 2) {
-                //fuenteAudio.clip = colliderFeedback; 
-                //fuenteAudio.Play(); 
-                Debug.Log("Has tocado correctamente el segundo cubo"); 
-                state += 1; 
+            else{
+                Debug.Log("Movimiento mal: No has pasado para la caja 2"); 
+                fuenteAudio.clip = wrongMove; 
+                fuenteAudio.Play(); 
+                resetTempo(); 
             }
-        if(this.name == "Cube3" && 
-            state == 3) {
-                //fuenteAudio.clip  = colliderFeedback; 
-                //fuenteAudio.Play(); 
-                Debug.Log("Has tocado correctamente el tercer cubo "); 
-                state = 0; 
-            }
-
-        else {
-            Debug.Log("No estas haciendo correctamente el gesto. "); 
-            Debug.Log("Has cometido un error porque estas en el estado: " + state + "y tocando el cubo: " + this.name); 
+            checkAux1 = false; 
         }
+        if(this.name == "state1" && !lockCollider1) { // tocas el cubo 1
+            lockColliders(true, false, false, false); 
+            if(firstMove) {
+                firstMove = false; 
+                Debug.Log("Entro en primer movimiento. "); 
+            }
+            else if(checkAux2) { // has pasado por el checkpoint 2
+                if(state == 1) {
+                    Debug.Log("Segunda parte del movimiento correcta. "); 
+                    fuenteAudio.clip = goodMove; 
+                    fuenteAudio.Play(); 
+                }
+                else{
+                    Debug.Log("Movimiento demasiado lento o demasiado rapido. "); 
+                    fuenteAudio.clip = wrongMove; 
+                    fuenteAudio.Play(); 
+                    resetTempo(); 
+                }
+            }
+            else{
+                Debug.Log("Movimiento mal: No has pasado por la caja 4. "); 
+                fuenteAudio.clip = wrongMove; 
+                fuenteAudio.Play(); 
+                resetTempo(); 
+            }
+            checkAux2 = false; 
 
-      
-        //Debug.Log("Ya has activado el cubo 1"); 
-        
+        }
+        // aux check boxes: 
+
+        if(this.name == "aux1" && !lockCollider2) {
+            lockColliders(false, true, false, false); 
+            checkAux1 = true; 
+            Debug.Log("Has pasado por el checkpoint 1"); 
+
+        }
+        if(this.name == "aux2" && !lockCollider4) {
+            lockColliders(false, false, false, true); 
+            checkAux2 = true; 
+            Debug.Log("Has pasado por el checkpoint 2"); 
+        }
     }
+
+    private void lockColliders(bool lock1, bool lock2, bool lock3, bool lock4) {
+        lockCollider1 = lock1; 
+        lockCollider2 = lock2; 
+        lockCollider3 = lock3; 
+        lockCollider4 = lock4; 
+    }
+
+    private void resetTempo() {
+        // reset: 
+        checkAux1 = false; 
+        checkAux2 = false; 
+        lockColliders(true, false, false, false); 
+    }
+   
 
 
 
