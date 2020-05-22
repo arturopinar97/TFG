@@ -16,14 +16,7 @@ public AudioClip wrongMove;
 public AudioClip goodMove; 
 
 public static int state; 
-private static int distanceError; // usado para el margen de error de movimiento de la mano.
 private bool activeTimer; // cerrojo para el timer. 
-private static double lastDistance; 
-private static bool lastMoveOk;
-public GameObject rightHand; 
-public double originalTime; 
-public bool tiempoAcabado = false; 
-private bool newState = false;
 
 
 // checkpoints aux boxes:
@@ -46,12 +39,7 @@ private static bool lockCollider4;
     public void Start() {
         fuenteAudio = GetComponent<AudioSource> ();
         state = 1; 
-        originalTime = 1; 
-        newState = false; 
         activeTimer = false; 
-        distanceError = 100; 
-        lastDistance = Double.PositiveInfinity; 
-        lastMoveOk = true; 
         checkAux1 = false; 
         checkAux2 = false; 
         firstMove = true; 
@@ -110,6 +98,7 @@ private static bool lockCollider4;
    
 
     private void OnTriggerEnter(Collider other) {
+        Debug.Log("ENTRO COLLIDER"); 
         if(this.name == "state2" && !lockCollider3) { // tocas el cubo 3
             lockColliders(false, false, true, false); 
             if(checkAux1) { // pasas por el checkpoint

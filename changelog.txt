@@ -35,7 +35,7 @@ CHANGED:
 - Script StateController.cs
 
 
-V1.6: 
+V1.4: 
 ADDED: 
 - Primera version funcional de escena tutorial tempo 2/4. 
 - La informacion se saca por logs. 
@@ -43,3 +43,11 @@ ADDED:
 
 CHANGED: 
 - StateController.cs
+
+V1.7: 
+ADDED: 
+- Todos los cubos de los gestos de tempo (compas de 2/4, 3/4, 4/4) colocados correctamente.
+- Scripts de deteccion de gestos de tempo: EN PROCESO. 
+
+CHANGED: 
+- Posicion de los cubos. 
