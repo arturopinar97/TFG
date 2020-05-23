@@ -97,7 +97,7 @@ private static bool lockCollider4;
     }
    
 
-    private void OnTriggerEnter(Collider other) {
+    /*private void OnTriggerEnter(Collider other) {
         Debug.Log("ENTRO COLLIDER"); 
         if(this.name == "state2" && !lockCollider3) { // tocas el cubo 3
             lockColliders(false, false, true, false); 
@@ -161,6 +161,10 @@ private static bool lockCollider4;
             checkAux2 = true; 
             Debug.Log("Has pasado por el checkpoint 2"); 
         }
+    }*/
+
+    private void OnCollisionEnter(Collision other) {
+        Debug.Log("Choco con " + other.gameObject.name);
     }
 
     private void lockColliders(bool lock1, bool lock2, bool lock3, bool lock4) {

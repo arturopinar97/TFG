@@ -51,3 +51,12 @@ ADDED:
 
 CHANGED: 
 - Posicion de los cubos. 
+
+V1.8: 
+ADDED: 
+- Deteccion de manos correcta. (los cubos saben diferenciar si les ha tocado la mano derecha o la izquierda). 
+- Scripts de deteccion de gestos de tempo: EN PROCESO. 
+
+CHANGED: 
+- Hay que agregar para el cubo y para cada una de las manos un BoxCollider (sin marcar is trigger) y un RigidBody (sin marcar isKinematic y sin marcar que sea afectado por la gravedad). 
+- Como queremos hacer la deteccion a través del collision del gameObject y no del collider(porque sino no podriamos obtener el nombre) usamos la funcion onCollisionEnter en el script de c# asociado a los cubos. 
