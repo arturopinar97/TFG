@@ -9,6 +9,16 @@ TagManager:
   - ChairsRow01
   - box
   - glove
+  - cube4
+  - cube9
+  - cube7
+  - cube1
+  - cube3
+  - cube6
+  - cube2
+  - LeftHand
+  - RightHand
+  - BothHands
   layers:
   - Default
   - TransparentFX

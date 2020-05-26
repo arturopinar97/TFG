@@ -19,6 +19,17 @@ public static int state;
 private bool activeTimer; // cerrojo para el timer. 
 
 
+// hands: 
+private const string LEFT_HAND_TAG = "LeftHand"; 
+private const string RIGHT_HAND_TAG = "RightHand"; 
+
+private const string RESPONSE_TEXT = "text_response_right_hand_gesture"; 
+
+private GameObject textResponseRightHandGesture;
+private bool writtenText; 
+private const float LIVE_SECONDS_TEXT = 2; 
+private float liveSecondsText; 
+
 // checkpoints aux boxes:
 private static bool checkAux1; 
 private static bool checkAux2; 
@@ -42,7 +53,9 @@ private static bool lockCollider7;
         //maxStates = 3; // 2 por 4
     }
     public void Start() {
+        textResponseRightHandGesture = GameObject.Find(RESPONSE_TEXT); 
         fuenteAudio = GetComponent<AudioSource> ();
+        this.writtenText = false; 
         state = 1; 
         activeTimer = false; 
         checkAux1 = false; 
@@ -50,6 +63,7 @@ private static bool lockCollider7;
         checkAux3 = false; 
         checkAux4 = false; 
         firstMove = true; 
+        liveSecondsText = LIVE_SECONDS_TEXT; 
          // evitar collider repetidos al salir la mano de la caja: 
             
         lockCollider1 = false; 
@@ -92,6 +106,7 @@ private static bool lockCollider7;
         //timer(); 
         StartCoroutine(waiter());
         luce(); 
+        
         // iluminar cubos checkeando cada estado en cada frame. 
     
     }
@@ -118,7 +133,14 @@ private static bool lockCollider7;
    
 
     private void OnTriggerEnter(Collider other) {
-        Debug.Log("ENTRO"); 
+        if(other.tag == RIGHT_HAND_TAG) {
+            handlerTempo(other); 
+        }
+        else if(other.tag == LEFT_HAND_TAG) {
+            Debug.Log("Ese gesto se debe realizar con la mano derecha"); 
+        }
+    }
+    private void handlerTempo(Collider other) { 
         if(this.name == "state3" && !lockCollider6) { // tocas el cubo 6
             lockColliders(false, false, false, false, false, true, false); 
             if(checkAux3) { // has pasado por el checkpoint 3
@@ -236,6 +258,24 @@ private static bool lockCollider7;
         lockColliders(true, false, false, false, false, false, false); 
     }
    
+
+
+    /* --------------------- TEXT RESPONSE HANDLER --------------------------- */ 
+    private void updateResponse(String text) {
+        this.textResponseRightHandGesture.GetComponent<TextMesh>().text = text;
+        this.writtenText = true; 
+         
+    }
+
+    private void waitToEraseText() {
+        if(this.writtenText){
+            this.liveSecondsText -= Time.deltaTime; 
+            if(liveSecondsText <= 0) {
+                updateResponse(""); 
+                this.writtenText = false; 
+            }
+        }
+    }
 
 
 
