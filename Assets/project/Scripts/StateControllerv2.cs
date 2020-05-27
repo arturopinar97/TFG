@@ -15,7 +15,7 @@ public AudioClip colliderFeedback;
 public AudioClip wrongMove; 
 public AudioClip goodMove; 
 
-private bool activeTimer; // cerrojo para el timer. 
+private static bool activeTimer; // cerrojo para el timer. 
 
 
 // hands: 
@@ -25,11 +25,11 @@ private const string RIGHT_HAND_TAG = "RightHand";
 private const string RESPONSE_TEXT = "text_response_right_hand_gesture"; 
 
 private GameObject textResponseRightHandGesture;
-private bool writtenText; 
-private const float LIVE_SECONDS_TEXT = 2; 
-private float liveSecondsText; 
+private static bool writtenText; 
+private const float LIVE_SECONDS_TEXT = 2f; 
+private static float liveSecondsText; 
 
-private const float SECONDS_PULSE = 1.2f; 
+private const float SECONDS_PULSE = 1f; 
 
 
 
@@ -42,6 +42,42 @@ private static bool disableBox3;
 private List<bool> okStates;
 private AudioSource fuenteAudio; 
 
+/* ---------- new after 26/05 init v2 ------------- */ 
+
+private const string RIGHT_HAND_NAME = "Human_RightHand"; 
+
+// Detect asynchronus gestures: 
+
+class Vector3Wrapper {
+    bool validValue; 
+    Vector3 vector; 
+
+    public Vector3Wrapper() {
+        validValue = false; 
+    }
+    
+    // getters and setters: 
+    public void setValid(bool value) {
+        this.validValue = value; 
+    }
+    public bool getValid() {
+        return this.validValue; 
+    }
+
+    public void setVector(Vector3 vector) {
+        this.vector = vector; 
+    }
+    public Vector3 getVector() {
+        return this.vector; 
+    }
+}
+private static Vector3Wrapper originalPosition; 
+private static Vector3Wrapper finalPosition; 
+public AudioClip testing; 
+public const float STATIC_BORDER_MOVE = 0.01f; // umbral testeado para 0.05 segundos. 
+private const float TIME_DETECTION_ASYNC_GESTURE = 0.05f;
+private static bool lockTimeAsyncGesture; 
+
 
 
 
@@ -52,7 +88,7 @@ private AudioSource fuenteAudio;
     public void Start() {
         textResponseRightHandGesture = GameObject.Find(RESPONSE_TEXT); 
         fuenteAudio = GetComponent<AudioSource> ();
-        this.writtenText = false; 
+        writtenText = false; 
        
         activeTimer = false; 
         disableBox3 = false; 
@@ -63,6 +99,10 @@ private AudioSource fuenteAudio;
         state = 1; 
         afterMove = false; 
         okStates = new List<bool>(); 
+        /* -------- NEW V2 --------- */ 
+        originalPosition = new Vector3Wrapper(); 
+        finalPosition = new Vector3Wrapper(); 
+        lockTimeAsyncGesture = false; 
 
             
     }
@@ -75,14 +115,19 @@ private AudioSource fuenteAudio;
             fuenteAudio.clip = colliderFeedback; 
             activeTimer = true; // los estados no pueden reiniciarse hasta llegar al final. 
             state = 1; 
-            //Debug.Log("Estado pasa a ser: " + state);
+            //Debug.Log("Estado pasa a ser: " + state); 
             fuenteAudio.Play(); 
+            //Debug.Log("Original position: " + originalPosition); 
+            //detectAsynchronusGesture(GameObject.Find(RIGHT_HAND_NAME)); 
 
             yield return new WaitForSecondsRealtime(SECONDS_PULSE); 
+            //detectAsynchronusGesture(GameObject.Find(RIGHT_HAND_NAME)); 
+            //Debug.Log("Final position: " + finalPosition); 
             state = 2; 
             //Debug.Log("Estado pasa a ser: " + state); 
             fuenteAudio.Play(); 
             yield return new WaitForSecondsRealtime(SECONDS_PULSE);
+            //detectAsynchronusGesture(GameObject.Find(RIGHT_HAND_NAME)); 
             state = 3; 
             fuenteAudio.Play(); 
             yield return new WaitForSecondsRealtime(SECONDS_PULSE); 
@@ -92,12 +137,27 @@ private AudioSource fuenteAudio;
         }
         //StartCoroutine(waiter());
     }
+
+    IEnumerator waiterDetectionAsyncGesture() {
+        if(lockTimeAsyncGesture == false) {
+            lockTimeAsyncGesture = true; 
+            yield return new WaitForSecondsRealtime(TIME_DETECTION_ASYNC_GESTURE);
+            detectAsynchronusGesture(GameObject.Find(RIGHT_HAND_NAME)); 
+            lockTimeAsyncGesture = false; 
+        }
+        
+         
+
+    }
     public void Update() {
         //Debug.Log("---- GUANTE: ------  X" + transform.position.x + "Y: " + transform.position.y +  "Z: " + transform.position.z); 
         //Debug.Log("---- CUBO: ------ X: " + box1.transform.position.x + "Y: " + transform.position.y + "Z: " + transform.position.z); 
         //timer(); 
         StartCoroutine(waiter());
         luce(); 
+
+        // --- v2 --- 
+        StartCoroutine(waiterDetectionAsyncGesture()); 
         
         // iluminar cubos checkeando cada estado en cada frame. 
     
@@ -180,13 +240,13 @@ private AudioSource fuenteAudio;
             }
         }
         else{
-            feedbackError(" --- " + this.name + "--- fuera de tiempo"); 
+            feedbackError("fuera de tiempo. Vuelve a la caja 1"); 
             handlerError(); 
         }
     }
     private void handlerCommonBoxes(int s) {
         if(afterMove == false) {
-            feedbackError("Comienza por la caja 1"); 
+            Debug.Log("Te has equivocado.Comienza por la caja 1"); 
         }
         else{
             if(state == s) {
@@ -194,12 +254,12 @@ private AudioSource fuenteAudio;
                     okStates.Add(true); 
                 }
                 else{
-                    feedbackError("No has pasado por alguna caja"); 
+                    feedbackError("No has pasado por alguna caja. Vuelve a la caja 1"); 
                     handlerError(); 
                 }
             }
             else{
-                feedbackError(" --- " + this.name + "--- fuera de tiempo");  
+                feedbackError("fuera de tiempo. Vuelve a la caja 1"); 
                 handlerError(); 
             }
         }
@@ -208,7 +268,7 @@ private AudioSource fuenteAudio;
     private void handlerAux2() {
         if(disableBox3 == false) { // para el caso cuando bajas de la caja 7 a la 1.
             if(afterMove == false) {
-                feedbackError("Comienza por la caja 1"); 
+                Debug.Log("Te has equivocado.Comienza por la caja 1"); 
             }
             else{
                 if(state == 1) {
@@ -216,12 +276,12 @@ private AudioSource fuenteAudio;
                         okStates.Add(true); 
                     }
                     else{
-                        feedbackError("No has pasado por alguna caja"); 
+                        feedbackError("No has pasado por alguna caja. Vuelve a la caja 1"); 
                         handlerError();
                     }
                 }
                 else{
-                    feedbackError(" --- " + this.name + "--- fuera de tiempo");  
+                    feedbackError("fuera de tiempo. Vuelve a la caja 1");  
                     handlerError(); 
                 }
             }
@@ -230,7 +290,7 @@ private AudioSource fuenteAudio;
 
     private void handlerAux4() {
         if(afterMove == false) {
-            feedbackError("Comienza por la caja 1"); 
+            Debug.Log(" Te has equivocado. Comienza por la caja 1"); 
         }
         else{
             if(state == 3) {
@@ -240,12 +300,12 @@ private AudioSource fuenteAudio;
                     okStates.Add(true); 
                 }
                 else{
-                    feedbackError("No has pasado por alguna caja"); 
+                    feedbackError("No has pasado por alguna caja. Vuelve a la caja 1"); 
                     handlerError(); 
                 }
             }
             else{
-                feedbackError(" --- " + this.name + "--- fuera de tiempo");  
+                feedbackError("fuera de tiempo. Vuelve a la caja 1");  
                 handlerError(); 
             }
         }
@@ -266,7 +326,8 @@ private AudioSource fuenteAudio;
     }
 
     private void feedbackGoodGesture() {
-        Debug.Log("Buen gesto. "); 
+        Debug.Log("soy: " + this.name + "Buen gesto. "); 
+        updateResponse("Buen gesto"); 
         fuenteAudio.clip = goodMove; 
         fuenteAudio.Play(); 
     }
@@ -287,19 +348,62 @@ private AudioSource fuenteAudio;
     /* --------------------- TEXT RESPONSE HANDLER --------------------------- */ 
     private void updateResponse(String text) {
         this.textResponseRightHandGesture.GetComponent<TextMesh>().text = text;
-        this.writtenText = true; 
+        writtenText = true; 
          
     }
 
     private void waitToEraseText() {
-        if(this.writtenText){
-            this.liveSecondsText -= Time.deltaTime; 
+        Debug.Log("writtenText: " + writtenText);
+        if(writtenText == true){
+            liveSecondsText -= Time.deltaTime; 
+            Debug.Log("liveSecondsText: " + liveSecondsText); 
             if(liveSecondsText <= 0) {
                 updateResponse(""); 
-                this.writtenText = false; 
+                writtenText = false; 
+                liveSecondsText = LIVE_SECONDS_TEXT; 
+                
             }
         }
     }
+
+
+
+    /* ------------------------- NEW AFTER 26/05 INIT V2 ------------------- */ 
+
+    private void setOriginalPosition(GameObject hand) {
+        originalPosition.setVector(hand.transform.position); 
+        originalPosition.setValid(true); 
+    }
+
+    private void setFinalPosition(GameObject hand) {
+        finalPosition.setVector(hand.transform.position);
+        finalPosition.setValid(true); 
+    }
+
+    private void detectAsynchronusGesture(GameObject positionObject) {
+        if(originalPosition.getValid() == false) {
+            setOriginalPosition(positionObject); 
+        }
+        else if(finalPosition.getValid() == false) {
+            setFinalPosition(positionObject); 
+        }
+        if(originalPosition.getValid() == true && finalPosition.getValid() == true) {
+            float distance = Vector3.Distance(originalPosition.getVector(), finalPosition.getVector()); 
+            Debug.Log("Distancia entre ambos puntos: " + distance);
+            // reset
+            originalPosition.setValid(false); 
+            finalPosition.setValid(false); 
+            if(distance < STATIC_BORDER_MOVE) {
+                fuenteAudio.clip = testing; 
+                fuenteAudio.Play();
+                Debug.Log("HACIENDO GESTO ASINCRONO");  
+            }
+            else{
+                Debug.Log("No esta haciendo gesto asincrono"); 
+            }
+        }
+
+    }   
 
 
 
