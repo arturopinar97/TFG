@@ -16,6 +16,10 @@ namespace Hi5_Interaction_Core
 		internal void Update(float detTime)
         {
 
+            /* MATR */ 
+            palmOrientation(); 
+
+            /* EMATR */ 
             if (IsCloseThumbAndIndexCollider())
             {
                 mHand.mVisibleHand.SetThumbAndIndexFingerCollider(false);
@@ -27,20 +31,20 @@ namespace Hi5_Interaction_Core
             {
                 mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EFist);
                 mState = Hi5_Glove_Gesture_Recognition_State.EFist;
-                mHand.mVisibleHand.ChangeColor(Color.yellow);
+                //mHand.mVisibleHand.ChangeColor(Color.yellow);
             }
-            else if (IsHandIndexPoint()) // dedo indice estirado
+            /*else if (IsHandIndexPoint()) // dedo indice estirado
             {
                 mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EIndexPoint);
                 mState = Hi5_Glove_Gesture_Recognition_State.EIndexPoint;
                 mHand.mVisibleHand.ChangeColor(Color.blue);
-            }
+            }*/
 
-            else if (IsHandPlane())
+            else if (IsHandPlane()) // palma de la mano
             {
                 mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EHandPlane);
                 mState = Hi5_Glove_Gesture_Recognition_State.EHandPlane;
-                mHand.mVisibleHand.ChangeColor(Color.green);
+                //mHand.mVisibleHand.ChangeColor(Color.green);
             }
             else if (IsOk())
             {
@@ -49,6 +53,14 @@ namespace Hi5_Interaction_Core
                 mHand.mVisibleHand.ChangeColor(Color.yellow);
             }
         
+            /* MATR */ 
+            else if(isIndexFingerUp()) {
+                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EIndexUp); 
+                mState = Hi5_Glove_Gesture_Recognition_State.EIndexUp; 
+                //mHand.mVisibleHand.ChangeColor(Color.white); 
+            }
+            
+            
             else
             {
                 mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.ENone);
@@ -70,6 +82,72 @@ namespace Hi5_Interaction_Core
             //}
               
         }
+
+        /* MATR */ 
+
+        internal void palmOrientation() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                float angle = mHand.mVisibleHand.palmOrientation(); 
+                if(angle > 0.0f && angle < 30.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.black); 
+                    //Debug.Log("negro"); 
+                }
+                else if(angle > 30.0f && angle < 60.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.blue); 
+                    //Debug.Log("azul"); 
+                }
+                else if(angle > 60.0f && angle < 90.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.cyan); 
+                    //Debug.Log("cian"); 
+                }
+                else if(angle > 90.0f && angle < 120.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.gray); 
+                    //Debug.Log("gris"); 
+                }
+                else if(angle > 120.0f && angle < 150.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.green); 
+                    //Debug.Log("verde"); 
+                }
+                else if(angle > 150.0f && angle < 180.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.grey); 
+                    //Debug.Log("gris2"); 
+                }
+                else if(angle > 180.0f && angle < 210.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.magenta); 
+                    //Debug.Log("magenta"); 
+                }
+                else if(angle > 210.0f && angle < 240.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.red); 
+                    //Debug.Log("rojo"); 
+                }
+                else if(angle > 240.0f && angle < 270.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.white); 
+                    //Debug.Log("blanco"); 
+                }
+                else if(angle > 270.0f && angle < 300.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.yellow); 
+                    //Debug.Log("amarillo"); 
+                }
+                else if(angle > 300.0f && angle < 360.0f) {
+                    mHand.mVisibleHand.ChangeColor(Color.clear); 
+                    //Debug.Log("transparente"); 
+                }
+
+            }
+        }
+
+        internal bool isIndexFingerUp() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                return mHand.mState.mJudgeMent.isIndexFingerUp(); 
+            }
+            else{
+                return false; 
+            }
+        }
+
+        /* EMATR */ 
+
+
 
         internal bool IsOk()
         {
@@ -158,7 +236,9 @@ namespace Hi5_Interaction_Core
 		EOk,
 		EFist,
         EIndexPoint,
-		EHandPlane
+		EHandPlane, 
+        /* MATR */
+        EIndexUp
 	}
 
 	public class Hi5_Glove_Gesture_Recognition_Record

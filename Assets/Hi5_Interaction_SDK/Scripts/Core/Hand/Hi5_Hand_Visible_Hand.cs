@@ -23,6 +23,9 @@ namespace Hi5_Interaction_Core
     public class Hi5_Hand_Visible_Hand : MonoBehaviour
     {
         public HI5.HI5_VIVEInstance mGlove_Hand;
+        /* MATR */ 
+        private static bool lockWaiter; 
+        /* EMATR */ 
 
         public bool IsFollowGlovHand
         {
@@ -186,11 +189,17 @@ namespace Hi5_Interaction_Core
         }
         #endregion
 
+
+
+        private void Start() {
+            lockWaiter = false; 
+        }
         private void Update()
         {
             if (mGlove_Hand != null)
                 mGlove_Hand.gameObject.GetComponent<Hi5_Glove_Interaction_Hand>().mVisibleHand = this;
             UpdateBone();
+            //StartCoroutine(waiter()); 
         }
 
         internal Hi5_Glove_Interaction_Hand  GetHand()
@@ -310,5 +319,52 @@ namespace Hi5_Interaction_Core
             if (NailColliderCount <= 0)
                 SetBoxColliderActive(true);
         }
+
+         /* MATR */ 
+
+        internal float palmOrientation() {
+            if(!this.m_IsLeftHand) {
+                Vector3 unitVector = Vector3.left; 
+                palm = transform.GetComponentInChildren<Hi5_Hand_Palm>().transform;
+                palm.GetComponent<Hi5_Hand_Palm>().mHand = this;
+                float angle = Vector3.Angle(this.handTransform.position, this.handTransform.forward); 
+                //Debug.Log("Angulo: " + angle);
+                throwRaycast(); 
+                return angle; 
+            }
+            else{
+                return 0.0f; 
+            }
+        }
+
+        internal void throwRaycast() {
+            RaycastHit hit; 
+            Debug.Log("Layer Hi5OtherFingerTail" + LayerMask.GetMask("Hi5OtherFingerTail")); 
+            Debug.Log("Layer Hi5OtherFingerOther" + LayerMask.GetMask("Hi5OtherFingerOther")); 
+            Debug.Log("Layer Hi5Palm" + LayerMask.GetMask("Hi5Palm")); 
+            Debug.Log("Layer Hi5IndexFingerTail" + LayerMask.GetMask("Hi5IndexFingerTail")); 
+            
+            if(Physics.Raycast(palm.position, palm.TransformDirection(Vector3.down), out hit, Mathf.Infinity)) {
+                 Debug.DrawRay(palm.position, palm.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
+                 Debug.Log("Did Hit" + hit.collider.name);
+            }
+        }
+
+
+
+
+
+        IEnumerator waiter() {
+            if(lockWaiter == false) {
+                lockWaiter = true; 
+                yield return new WaitForSecondsRealtime(1f); 
+                palmOrientation(); 
+                lockWaiter = false; 
+            }
+        }
+        /* EMATR */ 
     }
+
+
+    
 }

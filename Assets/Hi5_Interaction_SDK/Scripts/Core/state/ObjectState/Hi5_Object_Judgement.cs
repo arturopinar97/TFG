@@ -712,8 +712,21 @@ namespace Hi5_Interaction_Core
                 return false;
             }
         }
+
+
+        /* MATR */ 
+
+        internal bool isIndexFingerUp() {
             
-        internal bool IsFingerPlane()
+            bool res = false; 
+            if (Hand.mFingers [Hi5_Glove_Interaction_Finger_Type.EIndex].IsFingerPlane ())
+                res = true; 
+            return res; 
+        }
+           
+        /* EMATR */ 
+
+        internal bool IsFingerPlane() // estan los dedos estirados.
 		{
 			int count = 0;
 

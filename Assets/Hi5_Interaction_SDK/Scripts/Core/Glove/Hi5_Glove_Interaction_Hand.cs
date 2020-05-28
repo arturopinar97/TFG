@@ -286,5 +286,6 @@ namespace Hi5_Interaction_Core
            return  mGestureRecognition.GetRecognitionState();
         }
     }
+    
 
 }

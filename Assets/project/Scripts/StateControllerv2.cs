@@ -394,8 +394,8 @@ private static bool lockTimeAsyncGesture;
             originalPosition.setValid(false); 
             finalPosition.setValid(false); 
             if(distance < STATIC_BORDER_MOVE) {
-                fuenteAudio.clip = testing; 
-                fuenteAudio.Play();
+                //fuenteAudio.clip = testing; 
+                //fuenteAudio.Play();
                 Debug.Log("HACIENDO GESTO ASINCRONO");  
             }
             else{

@@ -12,6 +12,13 @@ namespace Hi5_Interaction_Core
         internal protected Hi5_Glove_Interaction_Hand mHand = null;
 		internal Transform mChildCollider = null;
         internal Hi5_Record mRecord = new Hi5_Record();
+
+        /* MATR */ 
+        private static bool lockWaiter; 
+        AudioSource fuenteAudio; 
+        public AudioClip feedbackSound; 
+
+        /* EMATR */ 
         internal protected void SetHi5Message(Hi5_Glove_Interaction_Message message)
         {
             //mMessage = message;
@@ -40,6 +47,7 @@ namespace Hi5_Interaction_Core
             }
         }
 
+       
         #region unity system
         protected override void Awake()
         {
@@ -188,6 +196,14 @@ namespace Hi5_Interaction_Core
 //			return isSurround;
 //		}
 		bool isSetLayer = false;
+
+        /* MATR */ 
+        void Start() {
+            lockWaiter = false; 
+            fuenteAudio = GetComponent<AudioSource> ();
+        }
+
+        /* EMATR */ 
 		void Update()
 		{
             mRecord.RecordPosition(Time.deltaTime, transform);
@@ -198,6 +214,7 @@ namespace Hi5_Interaction_Core
             //	transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer ("Hi5Palm");
             //	isSetLayer = true;
             //}
+                
         }
         internal Hi5_Record GetHi5Record()
         {
