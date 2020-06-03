@@ -26,7 +26,7 @@ private const string RESPONSE_TEXT = "text_response_right_hand_gesture";
 
 private GameObject textResponseRightHandGesture;
 private static bool writtenText; 
-private const float LIVE_SECONDS_TEXT = 2f; 
+private const float LIVE_SECONDS_TEXT = 10f; 
 private static float liveSecondsText; 
 
 private const float SECONDS_PULSE = 1f; 
@@ -155,6 +155,8 @@ private static bool lockTimeAsyncGesture;
         //timer(); 
         StartCoroutine(waiter());
         luce(); 
+        Debug.Log("hola"); 
+        waitToEraseText(); 
 
         // --- v2 --- 
         StartCoroutine(waiterDetectionAsyncGesture()); 
@@ -240,7 +242,7 @@ private static bool lockTimeAsyncGesture;
             }
         }
         else{
-            feedbackError("fuera de tiempo. Vuelve a la caja 1"); 
+            feedbackError("Out of time! Start from box 1");
             handlerError(); 
         }
     }
@@ -254,12 +256,12 @@ private static bool lockTimeAsyncGesture;
                     okStates.Add(true); 
                 }
                 else{
-                    feedbackError("No has pasado por alguna caja. Vuelve a la caja 1"); 
+                    feedbackError("Error, follow the path! Start from box 1"); 
                     handlerError(); 
                 }
             }
             else{
-                feedbackError("fuera de tiempo. Vuelve a la caja 1"); 
+                feedbackError("Out of time! Start from box 1"); 
                 handlerError(); 
             }
         }
@@ -276,12 +278,12 @@ private static bool lockTimeAsyncGesture;
                         okStates.Add(true); 
                     }
                     else{
-                        feedbackError("No has pasado por alguna caja. Vuelve a la caja 1"); 
+                        feedbackError("Error, follow the path! Start from box 1"); 
                         handlerError();
                     }
                 }
                 else{
-                    feedbackError("fuera de tiempo. Vuelve a la caja 1");  
+                    feedbackError("Out of time! Start from box 1");  
                     handlerError(); 
                 }
             }
@@ -300,12 +302,12 @@ private static bool lockTimeAsyncGesture;
                     okStates.Add(true); 
                 }
                 else{
-                    feedbackError("No has pasado por alguna caja. Vuelve a la caja 1"); 
+                    feedbackError("Error, follow the path! Start from box 1"); 
                     handlerError(); 
                 }
             }
             else{
-                feedbackError("fuera de tiempo. Vuelve a la caja 1");  
+                feedbackError("Out of time! Start from box 1");  
                 handlerError(); 
             }
         }
@@ -314,8 +316,8 @@ private static bool lockTimeAsyncGesture;
     private void feedbackError(string msg) {
         //Debug.Log("Error: " + msg); 
         updateResponse(msg); 
-        fuenteAudio.clip = wrongMove; 
-        fuenteAudio.Play(); 
+        //fuenteAudio.clip = wrongMove; 
+        //fuenteAudio.Play(); 
     }
 
     private void handlerError() {
@@ -327,9 +329,9 @@ private static bool lockTimeAsyncGesture;
 
     private void feedbackGoodGesture() {
         Debug.Log("soy: " + this.name + "Buen gesto. "); 
-        updateResponse("Buen gesto"); 
-        fuenteAudio.clip = goodMove; 
-        fuenteAudio.Play(); 
+        updateResponse("Well done!"); 
+        //fuenteAudio.clip = goodMove; 
+        //fuenteAudio.Play(); 
     }
 
     
@@ -353,10 +355,10 @@ private static bool lockTimeAsyncGesture;
     }
 
     private void waitToEraseText() {
-        Debug.Log("writtenText: " + writtenText);
+        //Debug.Log("writtenText: " + writtenText);
         if(writtenText == true){
             liveSecondsText -= Time.deltaTime; 
-            Debug.Log("liveSecondsText: " + liveSecondsText); 
+            //Debug.Log("liveSecondsText: " + liveSecondsText); 
             if(liveSecondsText <= 0) {
                 updateResponse(""); 
                 writtenText = false; 
@@ -389,17 +391,17 @@ private static bool lockTimeAsyncGesture;
         }
         if(originalPosition.getValid() == true && finalPosition.getValid() == true) {
             float distance = Vector3.Distance(originalPosition.getVector(), finalPosition.getVector()); 
-            Debug.Log("Distancia entre ambos puntos: " + distance);
+            //Debug.Log("Distancia entre ambos puntos: " + distance);
             // reset
             originalPosition.setValid(false); 
             finalPosition.setValid(false); 
             if(distance < STATIC_BORDER_MOVE) {
                 //fuenteAudio.clip = testing; 
                 //fuenteAudio.Play();
-                Debug.Log("HACIENDO GESTO ASINCRONO");  
+                //Debug.Log("HACIENDO GESTO ASINCRONO");  
             }
             else{
-                Debug.Log("No esta haciendo gesto asincrono"); 
+                //Debug.Log("No esta haciendo gesto asincrono"); 
             }
         }
 

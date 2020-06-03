@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Hi5_Interaction_SDK/Scenes/TableScene.unity
+- path: Assets/project/Scenes/Avanzado(3-4).unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

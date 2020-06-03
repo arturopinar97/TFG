@@ -339,14 +339,14 @@ namespace Hi5_Interaction_Core
 
         internal void throwRaycast() {
             RaycastHit hit; 
-            Debug.Log("Layer Hi5OtherFingerTail" + LayerMask.GetMask("Hi5OtherFingerTail")); 
-            Debug.Log("Layer Hi5OtherFingerOther" + LayerMask.GetMask("Hi5OtherFingerOther")); 
-            Debug.Log("Layer Hi5Palm" + LayerMask.GetMask("Hi5Palm")); 
-            Debug.Log("Layer Hi5IndexFingerTail" + LayerMask.GetMask("Hi5IndexFingerTail")); 
+            //Debug.Log("Layer Hi5OtherFingerTail" + LayerMask.GetMask("Hi5OtherFingerTail")); 
+            //Debug.Log("Layer Hi5OtherFingerOther" + LayerMask.GetMask("Hi5OtherFingerOther")); 
+            //Debug.Log("Layer Hi5Palm" + LayerMask.GetMask("Hi5Palm")); 
+            //Debug.Log("Layer Hi5IndexFingerTail" + LayerMask.GetMask("Hi5IndexFingerTail")); 
             
             if(Physics.Raycast(palm.position, palm.TransformDirection(Vector3.down), out hit, Mathf.Infinity)) {
                  Debug.DrawRay(palm.position, palm.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
-                 Debug.Log("Did Hit" + hit.collider.name);
+                 //Debug.Log("Did Hit" + hit.collider.name);
             }
         }
 
