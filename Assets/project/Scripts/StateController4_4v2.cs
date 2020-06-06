@@ -160,6 +160,19 @@ private static bool lockTimeAsyncGesture;
         StartCoroutine(waiterDetectionAsyncGesture()); 
         
         // iluminar cubos checkeando cada estado en cada frame. 
+
+        /* quitar */ 
+        if(Input.GetKeyDown(KeyCode.G)) {
+            feedbackGoodGesture(); 
+        }
+        else if(Input.GetKeyDown(KeyCode.H)) {
+            feedbackError("Out of time! Start from box 1");
+        }
+        else if(Input.GetKeyDown(KeyCode.J)) {
+            feedbackError("Error, follow the path! Start from box 1");
+        }
+        
+
     
     }
 
@@ -249,15 +262,15 @@ private static bool lockTimeAsyncGesture;
             }
             else {
                 if(!okStates.Contains(false)) { // si todos los movimientos han sido correctos
-                    feedbackGoodGesture(); 
+                    //feedbackGoodGesture(); 
                     okStates.Clear(); // prepara el nuevo ciclo. 
                     okStates.Add(true); 
                 }
             }
         }
         else{
-            feedbackError("Out of time! Start from box 1"); 
-            handlerError(); 
+            //feedbackError("Out of time! Start from box 1"); 
+            //handlerError(); 
         }
     }
     private void handlerCommonBoxes(int s) {
@@ -270,13 +283,13 @@ private static bool lockTimeAsyncGesture;
                     okStates.Add(true); 
                 }
                 else{
-                    feedbackError("Error, follow the path! Start from box 1"); 
-                    handlerError(); 
+                    //feedbackError("Error, follow the path! Start from box 1"); 
+                    //handlerError(); 
                 }
             }
             else{
-                feedbackError("Out of time! Start from box 1"); 
-                handlerError(); 
+                //feedbackError("Out of time! Start from box 1"); 
+                //handlerError(); 
             }
         }
     }
@@ -292,13 +305,13 @@ private static bool lockTimeAsyncGesture;
                         okStates.Add(true); 
                     }
                     else{
-                        feedbackError("Error, follow the path! Start from box 1"); 
-                        handlerError();
+                        //feedbackError("Error, follow the path! Start from box 1"); 
+                        //handlerError();
                     }
                 }
                 else{
-                    feedbackError("Out of time! Start from box 1");  
-                    handlerError(); 
+                    //feedbackError("Out of time! Start from box 1");  
+                    //handlerError(); 
                 }
             }
         }
@@ -316,13 +329,13 @@ private static bool lockTimeAsyncGesture;
                     okStates.Add(true); 
                 }
                 else{
-                    feedbackError("Error, follow the path! Start from box 1"); 
-                    handlerError(); 
+                    //feedbackError("Error, follow the path! Start from box 1"); 
+                    //handlerError(); 
                 }
             }
             else{
-                feedbackError("Out of time! Start from box 1");  
-                handlerError(); 
+                //feedbackError("Out of time! Start from box 1");  
+                //handlerError(); 
             }
         }
     }
@@ -353,8 +366,8 @@ private static bool lockTimeAsyncGesture;
     private void feedbackGoodGesture() {
         Debug.Log("soy: " + this.name + "Buen gesto. "); 
         updateResponse("Well done!"); 
-        //fuenteAudio.clip = goodMove; 
-        //fuenteAudio.Play(); 
+        fuenteAudio.clip = goodMove; 
+        fuenteAudio.Play(); 
     }
 
     

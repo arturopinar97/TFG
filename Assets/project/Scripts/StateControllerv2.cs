@@ -316,8 +316,8 @@ private static bool lockTimeAsyncGesture;
     private void feedbackError(string msg) {
         //Debug.Log("Error: " + msg); 
         updateResponse(msg); 
-        //fuenteAudio.clip = wrongMove; 
-        //fuenteAudio.Play(); 
+        fuenteAudio.clip = wrongMove; 
+        fuenteAudio.Play(); 
     }
 
     private void handlerError() {
@@ -330,8 +330,8 @@ private static bool lockTimeAsyncGesture;
     private void feedbackGoodGesture() {
         Debug.Log("soy: " + this.name + "Buen gesto. "); 
         updateResponse("Well done!"); 
-        //fuenteAudio.clip = goodMove; 
-        //fuenteAudio.Play(); 
+        fuenteAudio.clip = goodMove; 
+        fuenteAudio.Play(); 
     }
 
     

@@ -19,6 +19,7 @@ TagManager:
   - LeftHand
   - RightHand
   - BothHands
+  - IndexFinger
   layers:
   - Default
   - TransparentFX
