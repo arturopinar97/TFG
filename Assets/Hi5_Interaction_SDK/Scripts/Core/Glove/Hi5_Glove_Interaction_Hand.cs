@@ -209,7 +209,7 @@ namespace Hi5_Interaction_Core
         void Update()
         {
 			if (mGestureRecognition != null) {
-				mGestureRecognition.Update (Time.deltaTime);
+				mGestureRecognition.Update ();
 			}
             if (Hi5_Interaction_Const.IsUseVisibleHand)
             {

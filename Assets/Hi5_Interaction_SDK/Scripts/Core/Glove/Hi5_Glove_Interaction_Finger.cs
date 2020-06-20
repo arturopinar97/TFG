@@ -744,7 +744,8 @@ namespace Hi5_Interaction_Core
 //			if (colliderAngle > 90.0f)
 //				colliderAngle = colliderAngle - 180.0f;
 			//Debug.Log("IsFingerPlane colliderAngle=" + colliderAngle);
-			if (colliderAngle > 150.0f)
+			// original value: 150.0f
+            if (colliderAngle > 130.0f)
 			{
 				return true;
 			}

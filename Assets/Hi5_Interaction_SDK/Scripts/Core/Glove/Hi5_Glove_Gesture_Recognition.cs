@@ -1,26 +1,108 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/* MATR */ 
+using ChoVR_Core; 
+/* EMATR */ 
 namespace Hi5_Interaction_Core
 {
 	public class Hi5_Glove_Gesture_Recognition
 	{
 		Hi5_Glove_Interaction_Hand mHand = null;
 		Hi5_Glove_Gesture_Recognition_Record mRecord = null;
+        /* MATR */ 
+        AdvancedController advancedController; 
+        static bool isLocked; 
+        /* EMATR */ 
 		internal Hi5_Glove_Gesture_Recognition (Hi5_Glove_Interaction_Hand hand)
 		{
 			mRecord = new Hi5_Glove_Gesture_Recognition_Record ();
 			mHand = hand;
+            /* MATR */ 
+            isLocked = false; 
+            //advancedController.Start(); 
+            /* EMATR */ 
+
 		}
         internal bool IsWantPinch = false;
-		internal void Update(float detTime)
+        /* MATR */ 
+    
+		internal void Update()
         {
-
+            //advancedController.Update(); 
+            if(!isLocked) {
             /* MATR */ 
             //palmOrientation(); 
+            if(isExtendedPalmUp()){
+                isLocked = true; 
+                AdvancedController.setGesture(AdvancedController.EGesture.EIncreaseVolume); 
+                handlerExtendedPalmGesture(); 
+                //Debug.Log("Gesto palma arriba"); 
+                //Debug.Log("Target: " + AdvancedController.getTarget()); 
+                //mHand.mVisibleHand.ChangeColor(Color.blue); 
+                AdvancedController.handlerGesture(); 
+            }
+
+            else if(isExtendedPalmDown()) {
+                isLocked = true; 
+                AdvancedController.setGesture(AdvancedController.EGesture.ELowerVolume); 
+                //Debug.Log("Palma hacia abajo"); 
+                //mHand.mVisibleHand.ChangeColor(Color.yellow); 
+                handlerExtendedPalmGesture(); 
+                //Debug.Log("Gesto palma abajo");
+                //Debug.Log("Target: " + AdvancedController.getTarget()); 
+                AdvancedController.handlerGesture();
+            }
+
+            else if(IsHandFist()) {
+                isLocked = true; 
+                AdvancedController.setGesture(AdvancedController.EGesture.EMute); 
+                handlerFistGesture(); 
+                //mHand.mVisibleHand.ChangeColor(Color.red); 
+                AdvancedController.handlerGesture();
+            }
+            else if(isGesturePointUp()) {
+                isLocked = true; 
+                AdvancedController.setGesture(AdvancedController.EGesture.EIncreaseTone);
+                //Debug.Log("Detecto apuntar hacia arriba"); 
+                //mHand.mVisibleHand.ChangeColor(Color.green); 
+                //Debug.Log("Gesto de señalar hacia arriba"); 
+                handlerPointGestureUpDown(); 
+                AdvancedController.handlerGesture();
+            }
+
+            else if(isGesturePointDown()) {
+                isLocked = true; 
+                AdvancedController.setGesture(AdvancedController.EGesture.ELowerTone);
+                //Debug.Log("Detecto apuntar hacia abajo"); 
+                //mHand.mVisibleHand.ChangeColor(Color.white); 
+                //Debug.Log("Gesto de señalar hacia abajo"); 
+                handlerPointGestureUpDown(); 
+                AdvancedController.handlerGesture();
+            }
+
+            else if(isGesturePointAhead()) {
+                isLocked = true; 
+                AdvancedController.setGesture(AdvancedController.EGesture.ESign);
+                //Debug.Log("Detecto apuntar a alguien"); 
+                //mHand.mVisibleHand.ChangeColor(Color.black);
+                //Debug.Log("Gesto de señalar personaje");  
+                handlerPointGesture();
+                AdvancedController.handlerGesture();
+            }
+            else{
+                isLocked = true; 
+                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.ENone);
+                mState = Hi5_Glove_Gesture_Recognition_State.ENone;
+                mHand.mVisibleHand.ChangeColor(mHand.mVisibleHand.orgColor);
+                
+            }
+            isLocked = false; 
+            }
+        }
 
             /* EMATR */ 
-            if (IsCloseThumbAndIndexCollider())
+            /*if (IsCloseThumbAndIndexCollider())
             {
                 mHand.mVisibleHand.SetThumbAndIndexFingerCollider(false);
             }
@@ -40,7 +122,7 @@ namespace Hi5_Interaction_Core
                 mHand.mVisibleHand.ChangeColor(Color.blue);
             }*/
 
-            else if (IsHandPlane()) // palma de la mano
+            /*else if (IsHandPlane()) // palma de la mano
             {
                 mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EHandPlane);
                 mState = Hi5_Glove_Gesture_Recognition_State.EHandPlane;
@@ -54,19 +136,16 @@ namespace Hi5_Interaction_Core
             }
         
             /* MATR */ 
-            else if(isIndexFingerUp()) {
+            /*else if(isIndexFingerUp()) {
                 mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EIndexUp); 
                 mState = Hi5_Glove_Gesture_Recognition_State.EIndexUp; 
                 //mHand.mVisibleHand.ChangeColor(Color.white); 
-            }
+            }*/
+
+           
             
             
-            else
-            {
-                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.ENone);
-                mState = Hi5_Glove_Gesture_Recognition_State.ENone;
-                //mHand.mVisibleHand.ChangeColor(mHand.mVisibleHand.orgColor);
-            }
+           
             //if (Hi5_Interaction_Const.TestPinchOpenCollider)
             //{
             //    if (IsFlyPinch() || IsPinch2())
@@ -80,58 +159,22 @@ namespace Hi5_Interaction_Core
             //        IsWantPinch = false;
             //    }
             //}
-              
-        }
+            
+             /*else
+            {
+                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.ENone);
+                mState = Hi5_Glove_Gesture_Recognition_State.ENone;
+                mHand.mVisibleHand.ChangeColor(mHand.mVisibleHand.orgColor);
+                isLocked = false; 
+            }*/
+            
+        
 
         /* MATR */ 
 
-        internal void palmOrientation() {
+        /*internal void palmOrientation() {
             if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
-                float angle = mHand.mVisibleHand.palmOrientation(); 
-                if(angle > 0.0f && angle < 30.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.black); 
-                    //Debug.Log("negro"); 
-                }
-                else if(angle > 30.0f && angle < 60.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.blue); 
-                    //Debug.Log("azul"); 
-                }
-                else if(angle > 60.0f && angle < 90.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.cyan); 
-                    //Debug.Log("cian"); 
-                }
-                else if(angle > 90.0f && angle < 120.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.gray); 
-                    //Debug.Log("gris"); 
-                }
-                else if(angle > 120.0f && angle < 150.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.green); 
-                    //Debug.Log("verde"); 
-                }
-                else if(angle > 150.0f && angle < 180.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.grey); 
-                    //Debug.Log("gris2"); 
-                }
-                else if(angle > 180.0f && angle < 210.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.magenta); 
-                    //Debug.Log("magenta"); 
-                }
-                else if(angle > 210.0f && angle < 240.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.red); 
-                    //Debug.Log("rojo"); 
-                }
-                else if(angle > 240.0f && angle < 270.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.white); 
-                    //Debug.Log("blanco"); 
-                }
-                else if(angle > 270.0f && angle < 300.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.yellow); 
-                    //Debug.Log("amarillo"); 
-                }
-                else if(angle > 300.0f && angle < 360.0f) {
-                    mHand.mVisibleHand.ChangeColor(Color.clear); 
-                    //Debug.Log("transparente"); 
-                }
+                mHand.mVisibleHand.palmOrientation(); 
 
             }
         }
@@ -143,12 +186,112 @@ namespace Hi5_Interaction_Core
             else{
                 return false; 
             }
+        }*/ 
+
+
+
+        internal void handlerPointGesture() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                List<string> collisionTargets = AdvancedController.getCollisionTargets(); 
+                string currentTarget = mHand.mVisibleHand.searchCollisionRaycastObjectFromPointFinger(collisionTargets); 
+                AdvancedController.selectTarget(currentTarget); 
+                AdvancedController.setCurrentHand(mHand.mVisibleHand.getCurrentHand());
+
+                //Debug.Log("Current target: " + currentTarget); 
+            }
+        }
+        internal void handlerPointGestureUpDown() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                List<string> collisionTargets = AdvancedController.getCollisionTargets(); 
+                string currentTarget = mHand.mVisibleHand.searchCollisionRaycastObjectFromIndexPointFingerUpDown(collisionTargets); 
+                AdvancedController.selectTarget(currentTarget); 
+                AdvancedController.setCurrentHand(mHand.mVisibleHand.getCurrentHand());
+                //Debug.Log("currentTarget: " + currentTarget); 
+            }
+        }
+        internal bool isGesturePointUp() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                // 1. Check if index finger is pointing: 
+                if(mHand.mState.mJudgeMent.isIndexFingerPlane()) {
+                    // 2. Check if index finger points up: 
+                    return mHand.mVisibleHand.wherePointsIndexFinger() == Hi5_Hand_Visible_Hand.EPalmOrientation.UP; 
+                }
+            }
+            return false;
+        }
+
+        internal bool isGesturePointDown() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                if(mHand.mState.mJudgeMent.isIndexFingerPlane()) {
+                    return mHand.mVisibleHand.wherePointsIndexFinger() == Hi5_Hand_Visible_Hand.EPalmOrientation.DOWN;
+                }
+            }
+            return false; 
+        }
+
+        internal bool isGesturePointAhead() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                if(mHand.mState.mJudgeMent.isIndexFingerPlane()) {
+                    return mHand.mVisibleHand.wherePointsIndexFinger() == Hi5_Hand_Visible_Hand.EPalmOrientation.AHEAD; 
+                }
+            }
+            return false; 
+        }
+        internal void handlerFistGesture() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                List<string> collisionTargets = AdvancedController.getCollisionTargets(); 
+                string currentTarget = mHand.mVisibleHand.searchCollisionRaycastObjectFromFist(collisionTargets); 
+                AdvancedController.selectTarget(currentTarget); 
+                AdvancedController.setCurrentHand(mHand.mVisibleHand.getCurrentHand());
+                //Debug.Log("currentTarget: " + currentTarget); 
+                //Debug.Log("gesto puño"); 
+            }
+        }
+        internal void handlerExtendedPalmGesture() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+
+                //Debug.Log("Gesto de palma extendida"); 
+                
+                // Check if finger raycast collides with one chorist
+                List<string> collisionTargets = AdvancedController.getCollisionTargets(); 
+                //Debug.Log("collisionTargets: " + collisionTargets);
+                string currentTarget = mHand.mVisibleHand.searchCollisionRaycastObjectFromPointFinger(collisionTargets); 
+                //Debug.Log("currentTarget: " + currentTarget); 
+                AdvancedController.selectTarget(currentTarget); 
+                AdvancedController.setCurrentHand(mHand.mVisibleHand.getCurrentHand()); 
+                //advancedController.handlerGesture(); 
+            }
+        }
+        internal bool isExtendedPalmUp() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                // 1. Check palm orientation: 
+                if(mHand.mVisibleHand.palmOrientation() == Hi5_Hand_Visible_Hand.EPalmOrientation.UP) {
+                    // 2. Check all fingers extended: 
+                    if(mHand.mState.mJudgeMent.IsFingerPlane()){
+                        return true; 
+                    }
+                }
+            }
+            return false; 
+        }
+
+        internal bool isExtendedPalmDown() {
+            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
+                if(mHand.mVisibleHand.palmOrientation() == Hi5_Hand_Visible_Hand.EPalmOrientation.DOWN) {
+                    // 2. Check all fingers extended: 
+                    if(mHand.mState.mJudgeMent.IsFingerPlane()) {
+                        return true; 
+                    }
+                }
+            }
+            return false; 
         }
 
         /* EMATR */ 
 
 
 
+        
         internal bool IsOk()
         {
            // return mHand.mFingers[Hi5_Glove_Interaction_Finger_Type.EThumb].IsTumbColliderIndex();

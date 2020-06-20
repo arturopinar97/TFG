@@ -25,6 +25,9 @@ namespace Hi5_Interaction_Core
         public HI5.HI5_VIVEInstance mGlove_Hand;
         /* MATR */ 
         private static bool lockWaiter; 
+        AudioSource fuenteAudio; 
+        public AudioClip feedback; 
+        public AudioClip downFeedback; 
         /* EMATR */ 
 
         public bool IsFollowGlovHand
@@ -193,6 +196,7 @@ namespace Hi5_Interaction_Core
 
         private void Start() {
             lockWaiter = false; 
+            fuenteAudio = this.GetComponent<AudioSource>(); 
         }
         private void Update()
         {
@@ -322,7 +326,64 @@ namespace Hi5_Interaction_Core
 
          /* MATR */ 
 
-        internal float palmOrientation() {
+
+
+        /*internal EPalmOrientation palmRightOrientation() {
+            if(this.tag == "RightHand") {
+                return palmOrientation(); 
+            }
+        }*/
+
+        /*internal EPalmOrientation palmLeftOrientation() {
+            if(this.tag == "LeftHand") {
+                return palmOrientation(); 
+            }
+        }*/
+        internal EPalmOrientation palmOrientation() {
+            LayerMask layerMask = LayerMask.GetMask("ColliderAreas"); 
+            string collider = throwRaycast(layerMask, palm.position, palm.TransformDirection(Vector3.down)); 
+            if(collider != "") {
+                //Debug.Log("choco con: " + collider); 
+            }
+
+            /*if(collider == "AheadArea") {
+                ChangeColor(Color.blue); 
+            }
+            else if(collider == "BackArea") {
+                ChangeColor(Color.black); 
+            }
+            else if(collider == "LeftArea") {
+                ChangeColor(Color.green); 
+            }
+            else if(collider == "RightArea") {
+                ChangeColor(Color.red); 
+            }
+            else if(collider == "UpArea") {
+                ChangeColor(Color.white); 
+            }
+            else if(collider == "DownArea") {
+                ChangeColor(Color.yellow); 
+            }*/
+
+            switch(collider) {
+                case "AheadArea": 
+                    return EPalmOrientation.AHEAD; 
+                case "BackArea": 
+                    return EPalmOrientation.BACK; 
+                case "LeftArea": 
+                    return EPalmOrientation.LEFT; 
+                case "RightArea": 
+                    return EPalmOrientation.RIGHT; 
+                case "UpArea": 
+                    return EPalmOrientation.UP; 
+                case "DownArea": 
+                    return EPalmOrientation.DOWN; 
+                default: 
+                    return EPalmOrientation.NONEPOSITION; 
+            }
+        }
+
+        /*internal float palmOrientation() {
             if(!this.m_IsLeftHand) {
                 Vector3 unitVector = Vector3.left; 
                 palm = transform.GetComponentInChildren<Hi5_Hand_Palm>().transform;
@@ -335,21 +396,207 @@ namespace Hi5_Interaction_Core
             else{
                 return 0.0f; 
             }
-        }
+        }*/
 
-        internal void throwRaycast() {
+
+        // return element where raycast hit. 
+        internal string throwRaycast(LayerMask layerMask, Vector3 origin, Vector3 direction) {
             RaycastHit hit; 
-            //Debug.Log("Layer Hi5OtherFingerTail" + LayerMask.GetMask("Hi5OtherFingerTail")); 
-            //Debug.Log("Layer Hi5OtherFingerOther" + LayerMask.GetMask("Hi5OtherFingerOther")); 
-            //Debug.Log("Layer Hi5Palm" + LayerMask.GetMask("Hi5Palm")); 
-            //Debug.Log("Layer Hi5IndexFingerTail" + LayerMask.GetMask("Hi5IndexFingerTail")); 
-            
-            if(Physics.Raycast(palm.position, palm.TransformDirection(Vector3.down), out hit, Mathf.Infinity)) {
-                 Debug.DrawRay(palm.position, palm.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
-                 //Debug.Log("Did Hit" + hit.collider.name);
+            //LayerMask layerMask = LayerMask.GetMask("ColliderAreas"); 
+            //Debug.Log("Soy: " + this.name); 
+            if(layerMask == 0) {
+                if(Physics.Raycast(origin, direction, out hit, Mathf.Infinity)) {
+                    return hit.collider.name; 
+                }
+                else{
+                    return ""; 
+                }
+            }
+            if(Physics.Raycast(origin, direction, out hit, Mathf.Infinity, layerMask)) {
+                 //Debug.Log("choco con" + hit.collider.name); 
+                 return hit.collider.name; 
+            }
+            else{
+                return "";
             }
         }
 
+        internal EPalmOrientation wherePointsIndexFinger() {
+            // Check if index finger points up:
+            LayerMask layerMask = LayerMask.GetMask("ColliderAreas"); 
+            string target = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.right)); 
+            if(this.tag == "LeftHand") {
+                target = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.left)); 
+                //Debug.Log("izquierda apunta a: " + target); 
+
+            }
+
+            switch(target) {
+                case "UpArea": 
+                    return EPalmOrientation.UP; 
+                case "DownArea": 
+                    return EPalmOrientation.DOWN; 
+                case "AheadArea": 
+                    return EPalmOrientation.AHEAD; 
+                default: 
+                    return EPalmOrientation.NONEPOSITION; 
+            }
+            // if index points up but not collides with UpArea: 
+            /*EPalmOrientation palmOrientationVar = palmOrientation(); 
+            switch(palmOrientationVar) {
+                case EPalmOrientation.AHEAD: 
+                    return true; 
+                case EPalmOrientation.BACK: 
+                    return true; 
+                case EPalmOrientation.LEFT: 
+                    return true; 
+                case EPalmOrientation.RIGHT: 
+                    return true; 
+                default: 
+                    return false; 
+            }*/
+        }
+
+        internal string searchCollisionRaycastObjectFromIndexPointFingerUpDown(List<string> listTargets) {
+            LayerMask layerMask = LayerMask.GetMask("Characters"); 
+            string indexFrontPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.up));
+            string indexBackPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.down)); 
+            //string indexLeftPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.down)); 
+            //string indexRightPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.up)); 
+            //string indexUpPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.left)); 
+            //string indexDownPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.right)); 
+
+            if(listTargets.Contains(indexFrontPart)) {
+                return indexFrontPart; 
+            }
+            else if(listTargets.Contains(indexBackPart)) {
+                return indexBackPart; 
+            }
+            else{
+                return ""; 
+            }
+            /*else if(listTargets.Contains(indexLeftPart)) {
+                return indexLeftPart; 
+            }
+            else if(listTargets.Contains(indexRightPart)) {
+                return indexRightPart; 
+            }
+            else if(listTargets.Contains(indexUpPart)) {
+                return indexUpPart; 
+            }
+            else if(listTargets.Contains(indexDownPart)) {
+                return indexDownPart; 
+            }
+            else{
+                return ""; 
+            }*/
+        }
+
+        internal string searchCollisionRaycastObjectFromIndexPointFinger(List<string> listTargets) {
+            LayerMask layerMask = LayerMask.GetMask("Characters"); 
+            string indexRightPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.right));
+            string indexLeftPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.left));
+
+            if(listTargets.Contains(indexRightPart)) {
+                return indexRightPart; 
+            }
+            else if(listTargets.Contains(indexLeftPart)){
+                return indexLeftPart; 
+            }
+            else {
+                return ""; 
+            }
+        }
+        internal string searchCollisionRaycastObjectFromFist(List<string> listTargets) {
+            LayerMask layerMask = LayerMask.GetMask("Characters"); 
+            string palmFistDownTarget = throwRaycast(layerMask, palm.position, palm.TransformDirection(Vector3.right)); 
+            string palmFistUpTarget = throwRaycast(layerMask, palm.position, palm.TransformDirection(Vector3.left)); 
+            //Debug.Log("palmFistDownTarget: " + palmFistDownTarget); 
+            //Debug.Log("palmFistUpTarget: " + palmFistUpTarget); 
+
+            if(listTargets.Contains(palmFistDownTarget)) {
+                return palmFistDownTarget; 
+            }
+            else if(listTargets.Contains(palmFistUpTarget)) {
+                return palmFistUpTarget; 
+            }
+            else{
+                return ""; // fist is not pointing to any character
+            }
+
+        }
+        internal string searchCollisionRaycastObjectFromPointFinger(List<string> listTargets) {
+            // Search if there is one target that collision with raycast throwed from the point of any finger: 
+            // 1. Init layer mask only for use characters layer: 
+            LayerMask layerMask = 32768; 
+            // the reason for use index 2 of fingers transforms is that it is the closest part to nail. 
+            string indexFingerTarget = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.right)); 
+            string middleFingerTarget = throwRaycast(layerMask, m_MiddleFingerTransforms[2].position, m_MiddleFingerTransforms[2].TransformDirection(Vector3.right)); 
+            string ringFingerTarget = throwRaycast(layerMask, m_RingFingerTransforms[2].position, m_RingFingerTransforms[2].TransformDirection(Vector3.right)); 
+            string pinkyFingerTarget = throwRaycast(layerMask, m_PinkyFingerTransforms[2].position, m_PinkyFingerTransforms[2].TransformDirection(Vector3.right)); 
+
+            string indexFingerTargetDown = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.left)); 
+            string middleFingerTargetDown = throwRaycast(layerMask, m_MiddleFingerTransforms[2].position, m_MiddleFingerTransforms[2].TransformDirection(Vector3.left)); 
+            string ringFingerTargetDown = throwRaycast(layerMask, m_RingFingerTransforms[2].position, m_RingFingerTransforms[2].TransformDirection(Vector3.left)); 
+            string pinkyFingerTargetDown = throwRaycast(layerMask, m_PinkyFingerTransforms[2].position, m_PinkyFingerTransforms[2].TransformDirection(Vector3.left)); 
+            
+
+            //Debug.Log("indexFingerTarget: " + indexFingerTarget); 
+            //Debug.Log("middleFingerTarget: " + middleFingerTarget); 
+            //Debug.Log("ringFingerTarget: " + ringFingerTarget); 
+            //Debug.Log("pinkyFingerTarget: " + pinkyFingerTarget); 
+            // 2. Check if any targets are contained in list targets: 
+            if(listTargets.Contains(indexFingerTarget)) {
+                return indexFingerTarget; 
+            }
+            else if(listTargets.Contains(middleFingerTarget)) {
+                return middleFingerTarget; 
+            }
+            else if(listTargets.Contains(ringFingerTarget)) {
+                return ringFingerTarget; 
+            }
+            else if(listTargets.Contains(pinkyFingerTarget)) {
+                return pinkyFingerTarget; 
+            }
+
+            if(listTargets.Contains(indexFingerTargetDown)) {
+                return indexFingerTargetDown; 
+            }
+            else if(listTargets.Contains(middleFingerTargetDown)) {
+                return middleFingerTargetDown; 
+            }
+            else if(listTargets.Contains(ringFingerTargetDown)) {
+                return ringFingerTargetDown; 
+            }
+            else if(listTargets.Contains(pinkyFingerTargetDown)) {
+                return pinkyFingerTargetDown; 
+            }
+
+
+            
+            else{
+                return ""; // There are not any fingers pointing to listTargets. 
+            }
+
+        }
+
+        internal string getCurrentHand() {
+            return this.tag; 
+        }
+
+
+
+        public enum EPalmOrientation {
+            AHEAD,
+            BACK, 
+            LEFT, 
+            RIGHT, 
+            UP, 
+            DOWN, 
+            NONEPOSITION
+        }
+
+    
 
 
 

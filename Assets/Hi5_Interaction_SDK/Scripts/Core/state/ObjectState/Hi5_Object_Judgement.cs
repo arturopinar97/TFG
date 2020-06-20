@@ -716,12 +716,17 @@ namespace Hi5_Interaction_Core
 
         /* MATR */ 
 
-        internal bool isIndexFingerUp() {
+        internal bool isIndexFingerPlane() {
             
-            bool res = false; 
-            if (Hand.mFingers [Hi5_Glove_Interaction_Finger_Type.EIndex].IsFingerPlane ())
-                res = true; 
-            return res; 
+            if (Hand.mFingers [Hi5_Glove_Interaction_Finger_Type.EIndex].IsFingerPlane ()) {
+                if(!Hand.mFingers[Hi5_Glove_Interaction_Finger_Type.EThumb].IsFingerPlane() && 
+                    !Hand.mFingers[Hi5_Glove_Interaction_Finger_Type.EMiddle].IsFingerPlane() && 
+                    !Hand.mFingers[Hi5_Glove_Interaction_Finger_Type.ERing].IsFingerPlane() && 
+                    !Hand.mFingers[Hi5_Glove_Interaction_Finger_Type.EPinky].IsFingerPlane()) {
+                        return true; 
+                    }
+            } 
+            return false; 
         }
            
         /* EMATR */ 
