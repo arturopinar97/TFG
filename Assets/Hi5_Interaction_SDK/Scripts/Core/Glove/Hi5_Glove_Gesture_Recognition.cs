@@ -206,7 +206,7 @@ namespace Hi5_Interaction_Core
                 string currentTarget = mHand.mVisibleHand.searchCollisionRaycastObjectFromIndexPointFingerUpDown(collisionTargets); 
                 AdvancedController.selectTarget(currentTarget); 
                 AdvancedController.setCurrentHand(mHand.mVisibleHand.getCurrentHand());
-                //Debug.Log("currentTarget: " + currentTarget); 
+                Debug.Log("currentTarget: " + currentTarget); 
             }
         }
         internal bool isGesturePointUp() {

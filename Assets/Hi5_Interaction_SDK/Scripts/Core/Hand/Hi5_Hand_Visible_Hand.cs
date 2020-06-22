@@ -458,6 +458,7 @@ namespace Hi5_Interaction_Core
         }
 
         internal string searchCollisionRaycastObjectFromIndexPointFingerUpDown(List<string> listTargets) {
+            if(listTargets != null) {
             LayerMask layerMask = LayerMask.GetMask("Characters"); 
             string indexFrontPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.up));
             string indexBackPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.down)); 
@@ -490,9 +491,14 @@ namespace Hi5_Interaction_Core
             else{
                 return ""; 
             }*/
+            }
+            else{
+                return ""; 
+            }
         }
 
         internal string searchCollisionRaycastObjectFromIndexPointFinger(List<string> listTargets) {
+            if(listTargets != null) {
             LayerMask layerMask = LayerMask.GetMask("Characters"); 
             string indexRightPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.right));
             string indexLeftPart = throwRaycast(layerMask, m_IndexFingerTransforms[2].position, m_IndexFingerTransforms[2].TransformDirection(Vector3.left));
@@ -506,8 +512,13 @@ namespace Hi5_Interaction_Core
             else {
                 return ""; 
             }
+            }
+            else{
+                return ""; 
+            }
         }
         internal string searchCollisionRaycastObjectFromFist(List<string> listTargets) {
+            if(listTargets != null) {
             LayerMask layerMask = LayerMask.GetMask("Characters"); 
             string palmFistDownTarget = throwRaycast(layerMask, palm.position, palm.TransformDirection(Vector3.right)); 
             string palmFistUpTarget = throwRaycast(layerMask, palm.position, palm.TransformDirection(Vector3.left)); 
@@ -523,9 +534,15 @@ namespace Hi5_Interaction_Core
             else{
                 return ""; // fist is not pointing to any character
             }
+            }
+            else{
+                return ""; 
+            }
 
         }
         internal string searchCollisionRaycastObjectFromPointFinger(List<string> listTargets) {
+            
+            if(listTargets != null) {
             // Search if there is one target that collision with raycast throwed from the point of any finger: 
             // 1. Init layer mask only for use characters layer: 
             LayerMask layerMask = 32768; 
@@ -576,6 +593,10 @@ namespace Hi5_Interaction_Core
             
             else{
                 return ""; // There are not any fingers pointing to listTargets. 
+            }
+            }
+            else{
+                return ""; 
             }
 
         }

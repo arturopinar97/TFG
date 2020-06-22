@@ -58,6 +58,9 @@ private static bool lockContraltoLowerVolume;
 private static bool lockTenorLowerVolume; 
 private static bool lockBajoLowerVolume; 
 
+private static bool startSong; 
+private static bool startedSong; 
+
 
 
 
@@ -97,21 +100,13 @@ public void Start() {
     audioSourceTenor.clip = tenorVoice; 
     audioSourceBajo.clip = bajoVoice; 
 
-    audioSourceSoprano.Play();
-    audioSourceContralto.Play();
-    audioSourceTenor.Play();
-    audioSourceBajo.Play();
+    startSong = false; 
 
     audioSourceSoprano.volume = 0.5f; 
     audioSourceContralto.volume = 0.5f;
     audioSourceTenor.volume = 0.5f;
     audioSourceBajo.volume = 0.5f;
 
-
-    choristSoprano.GetComponent<Animator>().Play("Talking");
-    choristContralto.GetComponent<Animator>().Play("Talking");
-    choristTenor.GetComponent<Animator>().Play("Talking");
-    choristBajo.GetComponent<Animator>().Play("Talking");
 
 
     // cerrojos: 
@@ -136,6 +131,25 @@ public void Start() {
     lockBajoLowerVolume = false; 
 
     
+}
+
+private static void playSong() {
+        startedSong = true; 
+        audioSourceSoprano.Play();
+        audioSourceContralto.Play();
+        audioSourceTenor.Play();
+        audioSourceBajo.Play();
+
+        choristSoprano.GetComponent<Animator>().Play("Talking");
+        choristContralto.GetComponent<Animator>().Play("Talking");
+        choristTenor.GetComponent<Animator>().Play("Talking");
+        choristBajo.GetComponent<Animator>().Play("Talking");
+    
+}
+
+public static bool isSongStarted() {
+    //Debug.Log("isSongStarted: " + startSong); 
+    return startSong; 
 }
 
 public void Update() {
@@ -169,15 +183,11 @@ public void Update() {
 }
 
 private void repeatSong() {
-    if(!audioSourceSoprano.isPlaying || 
+    if((!audioSourceSoprano.isPlaying || 
         !audioSourceContralto.isPlaying || 
         !audioSourceTenor.isPlaying || 
-        !audioSourceBajo.isPlaying) {
-            audioSourceSoprano.Stop(); 
-            audioSourceContralto.Stop(); 
-            audioSourceTenor.Stop(); 
-            audioSourceBajo.Stop(); 
-
+        !audioSourceBajo.isPlaying) && 
+        (startSong)) {
             audioSourceSoprano.Play(); 
             audioSourceTenor.Play(); 
             audioSourceContralto.Play(); 
@@ -194,6 +204,11 @@ public static void notSignAll() {
 
 }
 
+public static void StartSong() {
+    startSong = true; 
+    Debug.Log("start song"); 
+    playSong();
+}
 
 public static void setStateSoprano(EState type) {
     sopranoState = type; 
@@ -452,10 +467,10 @@ private void changeVolume(string channel, EState state) {
     bool ok = mixer.GetFloat(channel, out value); 
     if(ok) {
     if(state == EState.INCREASE_VOLUME) {
-        value += 1.0f; 
+        value += 0.1f; 
     }
     else if(state == EState.LOWER_VOLUME) {
-        value -= 1.0f; 
+        value -= 0.1f; 
     }
     else{
         Debug.Log("Error en el cambio de tono"); 
@@ -541,10 +556,10 @@ private void changeTone(string channel, EState state) {
     bool ok = mixer.GetFloat(channel, out value); 
     if(ok) {
     if(state == EState.INCREASE_TONE) {
-        value += 0.025f; 
+        value += 0.005f; 
     }
     else if(state == EState.LOWER_TONE) {
-        value -= 0.025f; 
+        value -= 0.005f; 
     }
     else{
         Debug.Log("Error en el cambio de tono"); 

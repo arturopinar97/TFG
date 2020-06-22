@@ -10,7 +10,7 @@ namespace ChoVR_Core{
 public class AdvancedController : MonoBehaviour {
 
 //public GameObject box1; 
-public AudioClip colliderFeedback; 
+//public AudioClip colliderFeedback; 
 
 private static bool activeTimer; // cerrojo para el timer. 
 
@@ -58,7 +58,7 @@ private const string LEFT_HAND_NAME = "Human_LeftHand";
 
 // Detect asynchronus gestures: 
 
-public AudioClip testing; 
+//public AudioClip testing; 
 public const float STATIC_BORDER_MOVE = 0.01f; // umbral testeado para 0.05 segundos. 
 private const float TIME_DETECTION_ASYNC_GESTURE = 0.05f;
 private static bool lockTimeAsyncGestureLeft; 
@@ -179,7 +179,8 @@ public static void selectTarget(string targetName) {
 
 public static void handlerGesture() {
     if(verifyAsyncGesture() && isGestureAllowedByHand() 
-        /*isGestureAllowedByTime()*/ ) {
+        && CharacterController.isSongStarted()) {
+            //Debug.Log("gesto activos"); 
         actWithGesture(); 
         if(currentHand == EHand.ELeftHand) {
             lastGestureLeft = gesture; 
@@ -333,7 +334,7 @@ private static bool isGestureAllowedByTime() {
             if(!readyForSameGestureLeft){
                 //Debug.Log("espera al mismo gesto"); 
             }
-            Debug.Log("ready for sameGestureLeft: " + readyForSameGestureLeft); 
+            //Debug.Log("ready for sameGestureLeft: " + readyForSameGestureLeft); 
             return readyForSameGestureLeft;
         }
     }
@@ -351,6 +352,8 @@ private static bool isGestureAllowedByTime() {
     }
 }
 private static bool isGestureAllowedByHand() {
+    //Debug.Log("handisGestureAllowedByHand: " + currentHand); 
+    //Debug.Log("gestureIsGestureAllowedByHand: " + gesture);
     if(currentHand == EHand.ELeftHand) {
         if(gesture == EGesture.EIncreaseVolume) {
             return true;
@@ -373,6 +376,7 @@ private static bool isGestureAllowedByHand() {
     }
     else if(currentHand == EHand.ERightHand) {
         if(gesture == EGesture.EMute) {
+            Debug.Log("gesto permitido"); 
             return true; 
         }
         else if(gesture == EGesture.ESign) {
@@ -383,8 +387,12 @@ private static bool isGestureAllowedByHand() {
 }
 
 private static bool verifyAsyncGesture() {
+    //Debug.Log("verifyAsyncGesture- current hand: " + currentHand);
+    //Debug.Log("verifyAsyncGesture - asyncGestureLeft: " + asyncGestureLeft); 
+    //Debug.Log("verifyAsyncGesture - asyncGestureRight: " + asyncGestureRight); 
     if(currentHand == EHand.ELeftHand) {
         if(asyncGestureLeft) {
+            //Debug.Log("gesto asincrono"); 
             return true; 
         }
         else{
@@ -521,6 +529,7 @@ private static bool verifyAsyncGesture() {
     }
 
     private void detectAsynchronusGesture(GameObject hand) {
+        //Debug.Log("handTag: " + hand.tag); 
         if(hand.tag == RIGHT_HAND_TAG) {
             detectAsyncGestureRight(hand);
         }
