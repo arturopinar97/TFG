@@ -376,7 +376,7 @@ private static bool isGestureAllowedByHand() {
     }
     else if(currentHand == EHand.ERightHand) {
         if(gesture == EGesture.EMute) {
-            Debug.Log("gesto permitido"); 
+            //Debug.Log("gesto permitido"); 
             return true; 
         }
         else if(gesture == EGesture.ESign) {

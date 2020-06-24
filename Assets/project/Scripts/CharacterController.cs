@@ -396,68 +396,68 @@ public static void muteBajo() {
 
 
 private void increaseToneSoprano() {
-    if(!lockSopranoIncreaseTone) {
-        lockSopranoIncreaseTone = true; // lock only one thread.
+    //if(!lockSopranoIncreaseTone) {
+        //lockSopranoIncreaseTone = true; // lock only one thread.
         changeTone("pitchFieldSoprano", EState.INCREASE_TONE); 
         setSopranoNoChangeState(); 
-    }
+    //}
 }
 
 private void increaseToneContralto() {
-    if(!lockContraltoIncreaseTone) {
-        lockContraltoIncreaseTone = true; // lock only one thread.
+    //if(!lockContraltoIncreaseTone) {
+        //lockContraltoIncreaseTone = true; // lock only one thread.
         changeTone("pitchFieldContralto", EState.INCREASE_TONE); 
         setContraltoNoChangeState(); 
-    }
+    //}
 }
 
 private void increaseToneTenor() {
-    if(!lockTenorIncreaseTone) {
-        lockTenorIncreaseTone = true; // lock only one thread.
+    //if(!lockTenorIncreaseTone) {
+        //lockTenorIncreaseTone = true; // lock only one thread.
         changeTone("pitchFieldTenor", EState.INCREASE_TONE); 
         setTenorNoChangeState(); 
-    }
+    //}
 }
 
 private void increaseToneBajo() {
-    if(!lockBajoIncreaseTone) {
-        lockBajoIncreaseTone = true; // lock only one thread.
+    //if(!lockBajoIncreaseTone) {
+        //lockBajoIncreaseTone = true; // lock only one thread.
         changeTone("pitchFieldBajo", EState.INCREASE_TONE); 
         setBajoNoChangeState(); 
-    }
+    //}
 }
 
 
 private void lowerToneSoprano() {
-    if(!lockSopranoLowerTone) {
-        lockSopranoLowerTone = true; // lock only one thread.
+    //if(!lockSopranoLowerTone) {
+        //lockSopranoLowerTone = true; // lock only one thread.
         changeTone("pitchFieldSoprano", EState.LOWER_TONE); 
         setSopranoNoChangeState(); 
-    }
+    //}
 }
 
 private void lowerToneContralto() {
-    if(!lockContraltoLowerTone) {
-        lockContraltoLowerTone = true; // lock only one thread.
+    //if(!lockContraltoLowerTone) {
+        //lockContraltoLowerTone = true; // lock only one thread.
         changeTone("pitchFieldContralto", EState.LOWER_TONE); 
         setContraltoNoChangeState(); 
-    }
+    //}
 }
 
 private void lowerToneTenor() {
-    if(!lockTenorLowerTone) {
-        lockTenorLowerTone = true; // lock only one thread.
+    //if(!lockTenorLowerTone) {
+        //lockTenorLowerTone = true; // lock only one thread.
         changeTone("pitchFieldTenor", EState.LOWER_TONE); 
         setTenorNoChangeState(); 
-    }
+    //}
 }
 
 private void lowerToneBajo() {
-    if(!lockBajoLowerTone) {
-        lockBajoLowerTone = true; // lock only one thread.
+    //if(!lockBajoLowerTone) {
+        //lockBajoLowerTone = true; // lock only one thread.
         changeTone("pitchFieldBajo", EState.LOWER_TONE); 
         setBajoNoChangeState(); 
-    }
+    //}
 }
 
 
@@ -485,68 +485,68 @@ private void changeVolume(string channel, EState state) {
 }
 
 private void increaseVolumeSoprano() {
-    if(!lockSopranoIncreaseVolume) {
-        lockSopranoIncreaseVolume = false; // lock only one thread
+    //if(!lockSopranoIncreaseVolume) {
+        //lockSopranoIncreaseVolume = false; // lock only one thread
         changeVolume("volumeFieldSoprano", EState.INCREASE_VOLUME); 
         setSopranoNoChangeState(); 
-    }
+    //}
 }
 
 private void increaseVolumeContralto() {
-    if(!lockContraltoIncreaseVolume) {
-        lockContraltoIncreaseVolume = false; // lock only one thread
+    //if(!lockContraltoIncreaseVolume) {
+        //lockContraltoIncreaseVolume = false; // lock only one thread
         changeVolume("volumeFieldContralto", EState.INCREASE_VOLUME); 
         setContraltoNoChangeState(); 
-    }
+    //}
 }
 
 private void increaseVolumeTenor() {
-    if(!lockTenorIncreaseVolume) {
-        lockTenorIncreaseVolume = false; // lock only one thread
+    //if(!lockTenorIncreaseVolume) {
+        //lockTenorIncreaseVolume = false; // lock only one thread
         changeVolume("volumeFieldTenor", EState.INCREASE_VOLUME); 
         setTenorNoChangeState(); 
-    }
+    //}
 }
 
 private void increaseVolumeBajo() {
-    if(!lockBajoIncreaseVolume) {
-        lockBajoIncreaseVolume = false; // lock only one thread
+    //if(!lockBajoIncreaseVolume) {
+        //lockBajoIncreaseVolume = false; // lock only one thread
         changeVolume("volumeFieldBajo", EState.INCREASE_VOLUME); 
         setBajoNoChangeState(); 
-    }
+    //}
 }
 
 
 private void lowerVolumeSoprano() {
-    if(!lockSopranoLowerVolume) {
-        lockSopranoLowerVolume = false; // lock only one thread
+    //if(!lockSopranoLowerVolume) {
+        //lockSopranoLowerVolume = false; // lock only one thread
         changeVolume("volumeFieldSoprano", EState.LOWER_VOLUME); 
         setSopranoNoChangeState(); 
-    }
+    //}
 }
 
 private void lowerVolumeContralto() {
-    if(!lockContraltoLowerVolume) {
-        lockContraltoLowerVolume = false; // lock only one thread
+    //if(!lockContraltoLowerVolume) {
+        //lockContraltoLowerVolume = false; // lock only one thread
         changeVolume("volumeFieldContralto", EState.LOWER_VOLUME); 
         setContraltoNoChangeState(); 
-    }
+    //}
 }
 
 private void lowerVolumeTenor() {
-    if(!lockTenorLowerVolume) {
-        lockTenorLowerVolume = false; // lock only one thread
+    //if(!lockTenorLowerVolume) {
+        //lockTenorLowerVolume = false; // lock only one thread
         changeVolume("volumeFieldTenor", EState.LOWER_VOLUME); 
         setTenorNoChangeState(); 
-    }
+    //}
 }
 
 private void lowerVolumeBajo() {
-    if(!lockBajoLowerVolume) {
-        lockBajoLowerVolume = false; // lock only one thread
+    //if(!lockBajoLowerVolume) {
+        //lockBajoLowerVolume = false; // lock only one thread
         changeVolume("volumeFieldBajo", EState.LOWER_VOLUME); 
         setBajoNoChangeState(); 
-    }
+    //}
 }
 
 
@@ -556,10 +556,10 @@ private void changeTone(string channel, EState state) {
     bool ok = mixer.GetFloat(channel, out value); 
     if(ok) {
     if(state == EState.INCREASE_TONE) {
-        value += 0.005f; 
+        value += 0.001f; 
     }
     else if(state == EState.LOWER_TONE) {
-        value -= 0.005f; 
+        value -= 0.001f; 
     }
     else{
         Debug.Log("Error en el cambio de tono"); 
