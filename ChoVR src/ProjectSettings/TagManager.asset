@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - projectile
+  - FxTemporaire
+  - ChairsRow01
+  - box
+  - glove
+  - cube4
+  - cube9
+  - cube7
+  - cube1
+  - cube3
+  - cube6
+  - cube2
+  - LeftHand
+  - RightHand
+  - BothHands
+  - IndexFinger
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Hi5OtherFingerTail
+  - 'Hi5OtherFingerOther '
+  - 'Hi5Palm '
+  - 'Hi5ObjectGrasp '
+  - 'Hi5Plane '
+  - 'Hi5ObjectTrigger '
+  - 'Hi5IndexFingerTail '
+  - Characters
+  - ColliderAreas
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
