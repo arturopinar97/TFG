@@ -30,4 +30,18 @@ the needed abilities.
 Keywords
 Choral conducting, Virtual reality, Motion capture, Tempo, Chorists, Movement, Gesture. 
   
+# INSTALLATION ADVICES: 
+
+## STEAM: 
+  - In order to run ChoVR it is necesary to have installed SteamVR. 
+  - It can be installed from [this page] (https://store.steampowered.com/app/250820/SteamVR/). 
   
+## CALIBRATION: 
+  - Before run ChoVR it is highly recommended to calibrate HI5 Gloves using the Noitom's calibration scene provided in this repo with the name "calibration HI5 Gloves". 
+
+## SOUND:
+  - When SteamVR is initiated the sound output of your computer is changed to VIVE Headset output. To change this it is necessary to change output it Control Panel -> sound -> output device to PC's output. 
+## HEADSET ERROR: 
+  - Sometimes it is possible that an error message appears from the SteamVR headset, this occurs because in the position in which the headset is located is not communicating properly with the base stations. To fix this error is necessary to restart steamVR. 
+  
+
