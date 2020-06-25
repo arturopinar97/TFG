@@ -34,7 +34,7 @@ Choral conducting, Virtual reality, Motion capture, Tempo, Chorists, Movement, G
 
 ## STEAM: 
   - In order to run ChoVR it is necesary to have installed SteamVR. 
-  - It can be installed from [this page] (https://store.steampowered.com/app/250820/SteamVR/). 
+  - It can be installed from https://store.steampowered.com/app/250820/SteamVR/ 
   
 ## CALIBRATION: 
   - Before run ChoVR it is highly recommended to calibrate HI5 Gloves using the Noitom's calibration scene provided in this repo with the name "calibration HI5 Gloves". 
