@@ -1,5 +1,5 @@
 # TFG
-Repository that host the TFG from Cyntia Villaescusa, Elena Romero and Arturo Pinar
+Repository that host the TFG from Cinthya Villaescusa, Elena Romero and Arturo Pinar
 
 
 # ABSTRACT: 
