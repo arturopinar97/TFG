@@ -2675,4 +2675,4 @@ ScriptsOnlyBuild:
   - Assets/project/Scenes/Tutorial 2_4.unity
   - Assets/project/Scenes/Tutorial 3-4.unity
   - Assets/project/Scenes/Tutorial 4_4.unity
-  playerPath: D:/UNI/TFG/src/exec/ChoVR.exe
+  playerPath: D:/UNI/TFG/src/TFG-entregaFinal/ChoVR exec/ChoVR.exe
