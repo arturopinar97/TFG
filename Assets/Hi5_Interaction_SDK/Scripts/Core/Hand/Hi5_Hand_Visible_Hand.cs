@@ -23,12 +23,12 @@ namespace Hi5_Interaction_Core
     public class Hi5_Hand_Visible_Hand : MonoBehaviour
     {
         public HI5.HI5_VIVEInstance mGlove_Hand;
-        /* MATR */ 
+        /* Modified for ChoVR */  
         private static bool lockWaiter; 
         AudioSource fuenteAudio; 
         public AudioClip feedback; 
         public AudioClip downFeedback; 
-        /* EMATR */ 
+        /* End block modifications for ChoVR */  
 
         public bool IsFollowGlovHand
         {
@@ -324,21 +324,7 @@ namespace Hi5_Interaction_Core
                 SetBoxColliderActive(true);
         }
 
-         /* MATR */ 
-
-
-
-        /*internal EPalmOrientation palmRightOrientation() {
-            if(this.tag == "RightHand") {
-                return palmOrientation(); 
-            }
-        }*/
-
-        /*internal EPalmOrientation palmLeftOrientation() {
-            if(this.tag == "LeftHand") {
-                return palmOrientation(); 
-            }
-        }*/
+         /* Modified for ChoVR*/ 
         internal EPalmOrientation palmOrientation() {
             LayerMask layerMask = LayerMask.GetMask("ColliderAreas"); 
             string collider = throwRaycast(layerMask, palm.position, palm.TransformDirection(Vector3.down)); 
@@ -383,26 +369,10 @@ namespace Hi5_Interaction_Core
             }
         }
 
-        /*internal float palmOrientation() {
-            if(!this.m_IsLeftHand) {
-                Vector3 unitVector = Vector3.left; 
-                palm = transform.GetComponentInChildren<Hi5_Hand_Palm>().transform;
-                palm.GetComponent<Hi5_Hand_Palm>().mHand = this;
-                float angle = Vector3.Angle(this.handTransform.position, this.handTransform.forward); 
-                //Debug.Log("Angulo: " + angle);
-                throwRaycast(); 
-                return angle; 
-            }
-            else{
-                return 0.0f; 
-            }
-        }*/
-
-
+        
         // return element where raycast hit. 
         internal string throwRaycast(LayerMask layerMask, Vector3 origin, Vector3 direction) {
             RaycastHit hit; 
-            //LayerMask layerMask = LayerMask.GetMask("ColliderAreas"); 
             //Debug.Log("Soy: " + this.name); 
             if(layerMask == 0) {
                 if(Physics.Raycast(origin, direction, out hit, Mathf.Infinity)) {
@@ -441,20 +411,6 @@ namespace Hi5_Interaction_Core
                 default: 
                     return EPalmOrientation.NONEPOSITION; 
             }
-            // if index points up but not collides with UpArea: 
-            /*EPalmOrientation palmOrientationVar = palmOrientation(); 
-            switch(palmOrientationVar) {
-                case EPalmOrientation.AHEAD: 
-                    return true; 
-                case EPalmOrientation.BACK: 
-                    return true; 
-                case EPalmOrientation.LEFT: 
-                    return true; 
-                case EPalmOrientation.RIGHT: 
-                    return true; 
-                default: 
-                    return false; 
-            }*/
         }
 
         internal string searchCollisionRaycastObjectFromIndexPointFingerUpDown(List<string> listTargets) {
@@ -495,6 +451,7 @@ namespace Hi5_Interaction_Core
             else{
                 return ""; 
             }
+
         }
 
         internal string searchCollisionRaycastObjectFromIndexPointFinger(List<string> listTargets) {
@@ -630,7 +587,7 @@ namespace Hi5_Interaction_Core
                 lockWaiter = false; 
             }
         }
-        /* EMATR */ 
+        /* End of modifications for ChoVR in this script */ 
     }
 
 

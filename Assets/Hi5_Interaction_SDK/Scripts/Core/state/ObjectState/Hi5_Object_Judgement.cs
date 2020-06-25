@@ -714,7 +714,7 @@ namespace Hi5_Interaction_Core
         }
 
 
-        /* MATR */ 
+        /* Modified for ChoVR */  
 
         internal bool isIndexFingerPlane() {
             
@@ -729,7 +729,7 @@ namespace Hi5_Interaction_Core
             return false; 
         }
            
-        /* EMATR */ 
+        /* End block modifications for ChoVR */  
 
         internal bool IsFingerPlane() // estan los dedos estirados.
 		{

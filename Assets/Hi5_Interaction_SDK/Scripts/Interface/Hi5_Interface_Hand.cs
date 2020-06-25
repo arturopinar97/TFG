@@ -156,9 +156,9 @@ namespace Hi5_Interaction_Interface
                 {
 					case EEventHandType.EClap:
 						if (data.mHandType == EHandType.EHandLeft && mHand.m_IsLeftHand) {
-							HI5_Manager.EnableLeftVibration (200);
+							//HI5_Manager.EnableLeftVibration (200);
 						} else if (data.mHandType == EHandType.EHandRight && !mHand.m_IsLeftHand) {
-							HI5_Manager.EnableRightVibration (200);
+							//HI5_Manager.EnableRightVibration (200);
 						}
                         break;
 					case EEventHandType.EPoke:

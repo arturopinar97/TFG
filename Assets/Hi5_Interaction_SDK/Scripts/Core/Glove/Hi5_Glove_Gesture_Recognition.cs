@@ -1,38 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/* MATR */ 
+/* Modified for ChoVR */  
 using ChoVR_Core; 
-/* EMATR */ 
+/* End block modifications for ChoVR */  
 namespace Hi5_Interaction_Core
 {
 	public class Hi5_Glove_Gesture_Recognition
 	{
 		Hi5_Glove_Interaction_Hand mHand = null;
 		Hi5_Glove_Gesture_Recognition_Record mRecord = null;
-        /* MATR */ 
+        /* Modified for ChoVR */ 
         AdvancedController advancedController; 
         static bool isLocked; 
-        /* EMATR */ 
+        /* End Modified for ChoVR */ 
 		internal Hi5_Glove_Gesture_Recognition (Hi5_Glove_Interaction_Hand hand)
 		{
 			mRecord = new Hi5_Glove_Gesture_Recognition_Record ();
 			mHand = hand;
-            /* MATR */ 
+            /* Modified for ChoVR */ 
             isLocked = false; 
-            //advancedController.Start(); 
-            /* EMATR */ 
+            /* End mosified for ChoVR */ 
 
 		}
         internal bool IsWantPinch = false;
-        /* MATR */ 
+        /* Modified for ChoVR */ 
     
 		internal void Update()
         {
-            //advancedController.Update(); 
             if(!isLocked) {
-            /* MATR */ 
-            //palmOrientation(); 
             if(isExtendedPalmUp()){
                 isLocked = true; 
                 AdvancedController.setGesture(AdvancedController.EGesture.EIncreaseVolume); 
@@ -101,94 +97,6 @@ namespace Hi5_Interaction_Core
             }
         }
 
-            /* EMATR */ 
-            /*if (IsCloseThumbAndIndexCollider())
-            {
-                mHand.mVisibleHand.SetThumbAndIndexFingerCollider(false);
-            }
-            else
-                mHand.mVisibleHand.SetThumbAndIndexFingerCollider(true);
-
-            if (IsHandFist()) // cerrar la mano en forma de puño.
-            {
-                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EFist);
-                mState = Hi5_Glove_Gesture_Recognition_State.EFist;
-                //mHand.mVisibleHand.ChangeColor(Color.yellow);
-            }
-            /*else if (IsHandIndexPoint()) // dedo indice estirado
-            {
-                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EIndexPoint);
-                mState = Hi5_Glove_Gesture_Recognition_State.EIndexPoint;
-                mHand.mVisibleHand.ChangeColor(Color.blue);
-            }*/
-
-            /*else if (IsHandPlane()) // palma de la mano
-            {
-                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EHandPlane);
-                mState = Hi5_Glove_Gesture_Recognition_State.EHandPlane;
-                //mHand.mVisibleHand.ChangeColor(Color.green);
-            }
-            else if (IsOk())
-            {
-                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EOk);
-                mState = Hi5_Glove_Gesture_Recognition_State.EOk;
-                //mHand.mVisibleHand.ChangeColor(Color.yellow);
-            }
-        
-            /* MATR */ 
-            /*else if(isIndexFingerUp()) {
-                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.EIndexUp); 
-                mState = Hi5_Glove_Gesture_Recognition_State.EIndexUp; 
-                //mHand.mVisibleHand.ChangeColor(Color.white); 
-            }*/
-
-           
-            
-            
-           
-            //if (Hi5_Interaction_Const.TestPinchOpenCollider)
-            //{
-            //    if (IsFlyPinch() || IsPinch2())
-            //    {
-            //        mHand.mVisibleHand.ChangeColor(Color.blue);
-            //        IsWantPinch = true;
-            //    }
-            //    else
-            //    {
-            //        mHand.mVisibleHand.ChangeColor(mHand.mVisibleHand.orgColor);
-            //        IsWantPinch = false;
-            //    }
-            //}
-            
-             /*else
-            {
-                mRecord.RecordGesture(Hi5_Glove_Gesture_Recognition_State.ENone);
-                mState = Hi5_Glove_Gesture_Recognition_State.ENone;
-                mHand.mVisibleHand.ChangeColor(mHand.mVisibleHand.orgColor);
-                isLocked = false; 
-            }*/
-            
-        
-
-        /* MATR */ 
-
-        /*internal void palmOrientation() {
-            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
-                mHand.mVisibleHand.palmOrientation(); 
-
-            }
-        }
-
-        internal bool isIndexFingerUp() {
-            if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
-                return mHand.mState.mJudgeMent.isIndexFingerUp(); 
-            }
-            else{
-                return false; 
-            }
-        }*/ 
-
-
 
         internal void handlerPointGesture() {
             if(mHand != null && mHand.mState != null && mHand.mState.mJudgeMent != null) {
@@ -206,7 +114,7 @@ namespace Hi5_Interaction_Core
                 string currentTarget = mHand.mVisibleHand.searchCollisionRaycastObjectFromIndexPointFingerUpDown(collisionTargets); 
                 AdvancedController.selectTarget(currentTarget); 
                 AdvancedController.setCurrentHand(mHand.mVisibleHand.getCurrentHand());
-                Debug.Log("currentTarget: " + currentTarget); 
+                //Debug.Log("currentTarget: " + currentTarget); 
             }
         }
         internal bool isGesturePointUp() {
@@ -259,7 +167,6 @@ namespace Hi5_Interaction_Core
                 //Debug.Log("currentTarget: " + currentTarget); 
                 AdvancedController.selectTarget(currentTarget); 
                 AdvancedController.setCurrentHand(mHand.mVisibleHand.getCurrentHand()); 
-                //advancedController.handlerGesture(); 
             }
         }
         internal bool isExtendedPalmUp() {
@@ -287,9 +194,7 @@ namespace Hi5_Interaction_Core
             return false; 
         }
 
-        /* EMATR */ 
-
-
+    /* End of modifications in this Script for ChoVR */ 
 
         
         internal bool IsOk()
@@ -380,7 +285,7 @@ namespace Hi5_Interaction_Core
 		EFist,
         EIndexPoint,
 		EHandPlane, 
-        /* MATR */
+        /* Modified for ChoVR */ 
         EIndexUp
 	}
 

@@ -9,8 +9,6 @@ using HI5.VRCalibration;
 namespace ChoVR_Core{
 public class AdvancedController : MonoBehaviour {
 
-//public GameObject box1; 
-//public AudioClip colliderFeedback; 
 
 private static bool activeTimer; // cerrojo para el timer. 
 
@@ -56,9 +54,6 @@ private static int state;
 private const string RIGHT_HAND_NAME = "Human_RightHand"; 
 private const string LEFT_HAND_NAME = "Human_LeftHand"; 
 
-// Detect asynchronus gestures: 
-
-//public AudioClip testing; 
 public const float STATIC_BORDER_MOVE = 0.01f; // umbral testeado para 0.05 segundos. 
 private const float TIME_DETECTION_ASYNC_GESTURE = 0.05f;
 private static bool lockTimeAsyncGestureLeft; 
@@ -67,13 +62,6 @@ private static bool lockTimeAsyncGestureRight;
 private static bool asyncGestureLeft; 
 private static bool asyncGestureRight; 
 
-
-// LAST GESTURE: 
-private static EGesture lastGestureLeft;
-private static EGesture lastGestureRight;  
-private static bool readyForSameGestureRight; 
-private static bool readyForSameGestureLeft; 
-private const float TIME_GAP_BETWEEN_GESTURES = 3.0f; 
 
 // ------------------------ V3: ------------------------- 
 
@@ -110,10 +98,6 @@ private const string CHARACTER_SOPRANO = "SopranoCharacterArea";
 private const string CHARACTER_CONTRALTO = "ContraltoCharacterArea"; 
 private const string CHARACTER_TENOR = "TenorCharacterArea"; 
 private const string CHARACTER_BAJO = "BassCharacterArea"; 
-private const string CHORIST_SOPRANO = "soprano"; 
-private const string CHORIST_CONTRALTO = "contralto"; 
-private const string CHORIST_TENOR = "tenor"; 
-private const string CHORIST_BAJO = "bajo"; 
 
 private const string RIGHT_HAND_TAG = "RightHand"; 
 private const string LEFT_HAND_TAG = "LeftHand"; 
@@ -182,19 +166,6 @@ public static void handlerGesture() {
         && CharacterController.isSongStarted()) {
             //Debug.Log("gesto activos"); 
         actWithGesture(); 
-        if(currentHand == EHand.ELeftHand) {
-            lastGestureLeft = gesture; 
-            readyForSameGestureLeft = false; 
-        }
-        else if(currentHand == EHand.ERightHand) {
-            lastGestureRight = gesture; 
-            readyForSameGestureRight = false; 
-        }
-        else{
-            Debug.Log("Error de tags"); 
-        }
-        
-        
     }
 }
 
@@ -293,7 +264,6 @@ private static void lowerVolumeGesture() {
 private static void increaseToneGesture() {
     switch(target) {
         case ETarget.ESoprano: 
-            //Debug.Log("marco increase tone soprano");  
             CharacterController.setStateSoprano(CharacterController.EState.INCREASE_TONE); 
             break; 
         case ETarget.EContralto: 
@@ -325,32 +295,7 @@ private static void lowerToneGesture() {
     }
 }
 
-private static bool isGestureAllowedByTime() {
-    if(currentHand == EHand.ELeftHand) {
-        if(lastGestureLeft != gesture) {
-            return true; 
-        }
-        else{
-            if(!readyForSameGestureLeft){
-                //Debug.Log("espera al mismo gesto"); 
-            }
-            //Debug.Log("ready for sameGestureLeft: " + readyForSameGestureLeft); 
-            return readyForSameGestureLeft;
-        }
-    }
-    else if(currentHand == EHand.ERightHand) {
-        if(lastGestureRight != gesture) {
-            return true; 
-        }
-        else {
-            return readyForSameGestureRight; 
-        }
-    }
-    else{
-        Debug.Log("Error de tags"); 
-        return false; 
-    }
-}
+
 private static bool isGestureAllowedByHand() {
     //Debug.Log("handisGestureAllowedByHand: " + currentHand); 
     //Debug.Log("gestureIsGestureAllowedByHand: " + gesture);
@@ -450,14 +395,9 @@ private static bool verifyAsyncGesture() {
         finalPositionRight = new Vector3Wrapper();
     }
     public void Update() {
-        //StartCoroutine(waiter());
-        //luce(); 
-        //waitToEraseText(); 
 
         StartCoroutine(waiterDetectionAsyncGestureRight());  
         StartCoroutine(waiterDetectionAsyncGestureLeft()); 
-        StartCoroutine(waiterSameGesture()); 
-    
     }
 
     IEnumerator waiterDetectionAsyncGestureRight() {
@@ -475,17 +415,6 @@ private static bool verifyAsyncGesture() {
             yield return new WaitForSecondsRealtime(TIME_DETECTION_ASYNC_GESTURE);
             detectAsynchronusGesture(GameObject.Find(LEFT_HAND_NAME)); 
             lockTimeAsyncGestureRight = false; 
-        }
-    }
-
-    IEnumerator waiterSameGesture() {
-        if(!readyForSameGestureLeft) {
-            yield return new WaitForSecondsRealtime(TIME_GAP_BETWEEN_GESTURES); 
-            readyForSameGestureLeft = true; 
-        }
-        if(!readyForSameGestureRight) {
-            yield return new WaitForSecondsRealtime(TIME_GAP_BETWEEN_GESTURES); 
-            readyForSameGestureRight = true; 
         }
     }
 
@@ -551,18 +480,12 @@ private static bool verifyAsyncGesture() {
         }
         if(originalPositionLeft.getValid() == true && finalPositionLeft.getValid() == true) {
             float distance = Vector3.Distance(originalPositionLeft.getVector(), finalPositionLeft.getVector()); 
-            //Debug.Log("Distancia entre ambos puntos: " + distance);
-            // reset
             originalPositionLeft.setValid(false); 
             finalPositionLeft.setValid(false); 
             if(distance < STATIC_BORDER_MOVE) {
-                //fuenteAudio.clip = testing; 
-                //fuenteAudio.Play();
-                //Debug.Log("HACIENDO GESTO ASINCRONO");  
                 asyncGestureLeft = true; 
             }
-            else{
-                //Debug.Log("No esta haciendo gesto asincrono"); 
+            else{ 
                 asyncGestureLeft = false; 
             }
         }
@@ -577,13 +500,9 @@ private static bool verifyAsyncGesture() {
         }
         if(originalPositionRight.getValid() == true && finalPositionRight.getValid() == true) {
             float distance = Vector3.Distance(originalPositionRight.getVector(), finalPositionRight.getVector()); 
-            //Debug.Log("Distancia entre ambos puntos: " + distance);
-            // reset
             originalPositionRight.setValid(false); 
             finalPositionRight.setValid(false); 
             if(distance < STATIC_BORDER_MOVE) {
-                //fuenteAudio.clip = testing; 
-                //fuenteAudio.Play();
                 //Debug.Log("HACIENDO GESTO ASINCRONO");  
                 asyncGestureRight = true; 
             }

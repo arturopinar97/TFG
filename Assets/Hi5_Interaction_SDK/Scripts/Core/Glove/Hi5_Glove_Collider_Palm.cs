@@ -13,12 +13,12 @@ namespace Hi5_Interaction_Core
 		internal Transform mChildCollider = null;
         internal Hi5_Record mRecord = new Hi5_Record();
 
-        /* MATR */ 
+        /* Modified for ChoVR */  
         private static bool lockWaiter; 
         AudioSource fuenteAudio; 
         public AudioClip feedbackSound; 
 
-        /* EMATR */ 
+        /* End block modifications for ChoVR */  
         internal protected void SetHi5Message(Hi5_Glove_Interaction_Message message)
         {
             //mMessage = message;
@@ -197,13 +197,13 @@ namespace Hi5_Interaction_Core
 //		}
 		bool isSetLayer = false;
 
-        /* MATR */ 
+        /* Modified for ChoVR */  
         void Start() {
             lockWaiter = false; 
             fuenteAudio = GetComponent<AudioSource> ();
         }
 
-        /* EMATR */ 
+        /* End block modifications for ChoVR */  
 		void Update()
 		{
             mRecord.RecordPosition(Time.deltaTime, transform);

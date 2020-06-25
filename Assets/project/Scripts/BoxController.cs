@@ -79,7 +79,7 @@ void checkCorrectMove() {
 private void handlerGoodMove() {
     if(!badMove && !lockMove) {
         lockMove = true; 
-        Debug.Log("Buen movimiento"); 
+        //Debug.Log("Buen movimiento"); 
         unableBoxes(); 
         changeScreenMaterial(); 
         CharacterController.StartSong(); 

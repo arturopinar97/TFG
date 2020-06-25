@@ -37,27 +37,6 @@ public AudioClip tenorVoice;
 public AudioClip bajoVoice; 
 
 
-// cerrojos: 
-private static bool lockSopranoIncreaseTone; 
-private static bool lockContraltoIncreaseTone; 
-private static bool lockTenorIncreaseTone; 
-private static bool lockBajoIncreaseTone; 
-
-private static bool lockSopranoLowerTone; 
-private static bool lockContraltoLowerTone; 
-private static bool lockTenorLowerTone; 
-private static bool lockBajoLowerTone; 
-
-private static bool lockSopranoIncreaseVolume; 
-private static bool lockContraltoIncreaseVolume; 
-private static bool lockTenorIncreaseVolume; 
-private static bool lockBajoIncreaseVolume; 
-
-private static bool lockSopranoLowerVolume; 
-private static bool lockContraltoLowerVolume; 
-private static bool lockTenorLowerVolume; 
-private static bool lockBajoLowerVolume; 
-
 private static bool startSong; 
 private static bool startedSong; 
 
@@ -108,28 +87,6 @@ public void Start() {
     audioSourceBajo.volume = 0.5f;
 
 
-
-    // cerrojos: 
-    lockSopranoIncreaseTone = false; 
-    lockContraltoIncreaseTone = false; 
-    lockTenorIncreaseTone = false; 
-    lockBajoIncreaseTone = false; 
-
-    lockSopranoLowerTone = false; 
-    lockContraltoLowerTone = false; 
-    lockTenorLowerTone = false; 
-    lockBajoLowerTone = false; 
-
-    lockSopranoIncreaseVolume = false; 
-    lockContraltoIncreaseVolume = false; 
-    lockTenorIncreaseVolume = false; 
-    lockBajoIncreaseVolume = false; 
-
-    lockSopranoLowerVolume = false; 
-    lockContraltoLowerVolume = false; 
-    lockTenorLowerVolume = false; 
-    lockBajoLowerVolume = false; 
-
     
 }
 
@@ -156,27 +113,6 @@ public void Update() {
     repeatSong(); 
     
     evaluateStates(); 
-
-    // waiters gestures: 
-    StartCoroutine(waiterIncreaseToneSoprano()); 
-    StartCoroutine(waiterIncreaseToneContralto());
-    StartCoroutine(waiterIncreaseToneTenor());
-    StartCoroutine(waiterIncreaseToneBajo());
-
-    StartCoroutine(waiterLowerToneSoprano()); 
-    StartCoroutine(waiterLowerToneContralto());
-    StartCoroutine(waiterLowerToneTenor());
-    StartCoroutine(waiterLowerToneBajo());
-
-    StartCoroutine(waiterIncreaseVolumeSoprano()); 
-    StartCoroutine(waiterIncreaseVolumeContralto());
-    StartCoroutine(waiterIncreaseVolumeTenor());
-    StartCoroutine(waiterIncreaseVolumeBajo());
-
-    StartCoroutine(waiterLowerVolumeSoprano()); 
-    StartCoroutine(waiterLowerVolumeContralto());
-    StartCoroutine(waiterLowerVolumeTenor());
-    StartCoroutine(waiterLowerVolumeBajo());
 
 
     
@@ -206,7 +142,7 @@ public static void notSignAll() {
 
 public static void StartSong() {
     startSong = true; 
-    Debug.Log("start song"); 
+    //Debug.Log("start song"); 
     playSong();
 }
 
@@ -396,68 +332,44 @@ public static void muteBajo() {
 
 
 private void increaseToneSoprano() {
-    //if(!lockSopranoIncreaseTone) {
-        //lockSopranoIncreaseTone = true; // lock only one thread.
         changeTone("pitchFieldSoprano", EState.INCREASE_TONE); 
         setSopranoNoChangeState(); 
-    //}
 }
 
 private void increaseToneContralto() {
-    //if(!lockContraltoIncreaseTone) {
-        //lockContraltoIncreaseTone = true; // lock only one thread.
         changeTone("pitchFieldContralto", EState.INCREASE_TONE); 
         setContraltoNoChangeState(); 
-    //}
 }
 
 private void increaseToneTenor() {
-    //if(!lockTenorIncreaseTone) {
-        //lockTenorIncreaseTone = true; // lock only one thread.
         changeTone("pitchFieldTenor", EState.INCREASE_TONE); 
         setTenorNoChangeState(); 
-    //}
 }
 
 private void increaseToneBajo() {
-    //if(!lockBajoIncreaseTone) {
-        //lockBajoIncreaseTone = true; // lock only one thread.
         changeTone("pitchFieldBajo", EState.INCREASE_TONE); 
         setBajoNoChangeState(); 
-    //}
 }
 
 
 private void lowerToneSoprano() {
-    //if(!lockSopranoLowerTone) {
-        //lockSopranoLowerTone = true; // lock only one thread.
         changeTone("pitchFieldSoprano", EState.LOWER_TONE); 
         setSopranoNoChangeState(); 
-    //}
 }
 
 private void lowerToneContralto() {
-    //if(!lockContraltoLowerTone) {
-        //lockContraltoLowerTone = true; // lock only one thread.
         changeTone("pitchFieldContralto", EState.LOWER_TONE); 
         setContraltoNoChangeState(); 
-    //}
 }
 
 private void lowerToneTenor() {
-    //if(!lockTenorLowerTone) {
-        //lockTenorLowerTone = true; // lock only one thread.
         changeTone("pitchFieldTenor", EState.LOWER_TONE); 
         setTenorNoChangeState(); 
-    //}
 }
 
 private void lowerToneBajo() {
-    //if(!lockBajoLowerTone) {
-        //lockBajoLowerTone = true; // lock only one thread.
         changeTone("pitchFieldBajo", EState.LOWER_TONE); 
         setBajoNoChangeState(); 
-    //}
 }
 
 
@@ -485,68 +397,44 @@ private void changeVolume(string channel, EState state) {
 }
 
 private void increaseVolumeSoprano() {
-    //if(!lockSopranoIncreaseVolume) {
-        //lockSopranoIncreaseVolume = false; // lock only one thread
         changeVolume("volumeFieldSoprano", EState.INCREASE_VOLUME); 
         setSopranoNoChangeState(); 
-    //}
 }
 
 private void increaseVolumeContralto() {
-    //if(!lockContraltoIncreaseVolume) {
-        //lockContraltoIncreaseVolume = false; // lock only one thread
         changeVolume("volumeFieldContralto", EState.INCREASE_VOLUME); 
         setContraltoNoChangeState(); 
-    //}
 }
 
 private void increaseVolumeTenor() {
-    //if(!lockTenorIncreaseVolume) {
-        //lockTenorIncreaseVolume = false; // lock only one thread
         changeVolume("volumeFieldTenor", EState.INCREASE_VOLUME); 
         setTenorNoChangeState(); 
-    //}
 }
 
 private void increaseVolumeBajo() {
-    //if(!lockBajoIncreaseVolume) {
-        //lockBajoIncreaseVolume = false; // lock only one thread
         changeVolume("volumeFieldBajo", EState.INCREASE_VOLUME); 
         setBajoNoChangeState(); 
-    //}
 }
 
 
 private void lowerVolumeSoprano() {
-    //if(!lockSopranoLowerVolume) {
-        //lockSopranoLowerVolume = false; // lock only one thread
         changeVolume("volumeFieldSoprano", EState.LOWER_VOLUME); 
         setSopranoNoChangeState(); 
-    //}
 }
 
 private void lowerVolumeContralto() {
-    //if(!lockContraltoLowerVolume) {
-        //lockContraltoLowerVolume = false; // lock only one thread
         changeVolume("volumeFieldContralto", EState.LOWER_VOLUME); 
         setContraltoNoChangeState(); 
-    //}
 }
 
 private void lowerVolumeTenor() {
-    //if(!lockTenorLowerVolume) {
-        //lockTenorLowerVolume = false; // lock only one thread
         changeVolume("volumeFieldTenor", EState.LOWER_VOLUME); 
         setTenorNoChangeState(); 
-    //}
 }
 
 private void lowerVolumeBajo() {
-    //if(!lockBajoLowerVolume) {
-        //lockBajoLowerVolume = false; // lock only one thread
         changeVolume("volumeFieldBajo", EState.LOWER_VOLUME); 
         setBajoNoChangeState(); 
-    //}
 }
 
 
@@ -577,122 +465,6 @@ private void changeTone(string channel, EState state) {
 private float generatorVolume() {
     return 0.0f; 
 }
-IEnumerator waiterIncreaseToneSoprano() {
-    if(lockSopranoIncreaseTone) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockSopranoIncreaseTone = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterIncreaseToneContralto() {
-    if(lockContraltoIncreaseTone) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockContraltoIncreaseTone = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterIncreaseToneTenor() {
-    if(lockTenorIncreaseTone) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockTenorIncreaseTone = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterIncreaseToneBajo() {
-    if(lockBajoIncreaseTone) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockBajoIncreaseTone = false;  // unlock increase tone soprano
-    }
-}
-
-
-IEnumerator waiterLowerToneSoprano() {
-    if(lockSopranoLowerTone) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockSopranoLowerTone = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterLowerToneContralto() {
-    if(lockContraltoLowerTone) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockContraltoLowerTone = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterLowerToneTenor() {
-    if(lockTenorLowerTone) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockTenorLowerTone = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterLowerToneBajo() {
-    if(lockBajoLowerTone) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockBajoLowerTone = false;  // unlock increase tone soprano
-    }
-}
-
-
-
-IEnumerator waiterIncreaseVolumeSoprano() {
-    if(lockSopranoIncreaseVolume) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockSopranoIncreaseVolume = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterIncreaseVolumeContralto() {
-    if(lockContraltoIncreaseVolume) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockContraltoIncreaseVolume = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterIncreaseVolumeTenor() {
-    if(lockTenorIncreaseVolume) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockTenorIncreaseVolume = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterIncreaseVolumeBajo() {
-    if(lockBajoIncreaseVolume) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockBajoIncreaseVolume = false;  // unlock increase tone soprano
-    }
-}
-
-
-IEnumerator waiterLowerVolumeSoprano() {
-    if(lockSopranoLowerVolume) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockSopranoLowerVolume = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterLowerVolumeContralto() {
-    if(lockContraltoLowerVolume) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockContraltoLowerVolume = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterLowerVolumeTenor() {
-    if(lockTenorLowerVolume) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockTenorLowerVolume = false;  // unlock increase tone soprano
-    }
-}
-
-IEnumerator waiterLowerVolumeBajo() {
-    if(lockBajoLowerVolume) {
-        yield return new WaitForSecondsRealtime(2.0f); 
-        lockBajoLowerVolume = false;  // unlock increase tone soprano
-    }
-}
-
 private void setSopranoNoChangeState() {
     sopranoState = EState.NO_CHANGE;
 }
