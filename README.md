@@ -42,6 +42,6 @@ Choral conducting, Virtual reality, Motion capture, Tempo, Chorists, Movement, G
 ## SOUND:
   - When SteamVR is initiated the sound output of your computer is changed to VIVE Headset output. To change this it is necessary to change output it Control Panel -> sound -> output device to PC's output. 
 ## HEADSET ERROR: 
-  - Sometimes it is possible that an error message appears from the SteamVR headset, this occurs because in the position in which the headset is located is not communicating properly with the base stations. To fix this error is necessary to restart steamVR. 
+  - Sometimes it is possible that an error message appears from the SteamVR headset. This occurs because in the position in which the headset is located is not communicating properly with the base stations. To fix this error is necessary to restart steamVR. 
   
 
